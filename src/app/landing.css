@@ -1,6 +1,3 @@
-
-
-
 .landing { font-family: 'Noto Sans Georgian', sans-serif; color: #243238; background: #f6f7f2; font-synthesis: none; --ink: #243238; --muted: #56635f; --paper: #f6f7f2; --cream: #fffefa; --line: #d8e0da; --bronze: #b96143; --dark: #1f3a38; }
 .landing * { box-sizing: border-box; }
 .landing { scroll-behavior: smooth; }
@@ -8,7 +5,24 @@
 .landing a { color: inherit; text-decoration: none; }
 .landing button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
 .landing.site-shell { overflow: hidden; }
-.landing .site-header { height: 72px; padding: 0 5.2vw; display: flex; align-items: center; justify-content: space-between; position: absolute; inset: 0 0 auto; z-index: 10; color: #fff; border-bottom: 1px solid rgba(255,255,255,.3); }
+
+/* გასწორებული ჰედერი: ამოწეულია ზედა კიდიდან და არ არის მიკრული */
+.landing .site-header { 
+  height: 80px; 
+  padding: 0 5.2vw; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  position: absolute; 
+  top: 18px; 
+  left: 24px;
+  right: 24px;
+  width: auto;
+  z-index: 10; 
+  color: #fff; 
+  border-bottom: 1px solid rgba(255,255,255,.2); 
+}
+
 .landing .brand { display: flex; align-items: center; gap: 12px; letter-spacing: -.02em; }
 .landing .brand-mark { width: 27px; height: 27px; border: 1px solid currentColor; display: grid; place-items: center; font-family: Georgia, serif; font-size: 15px; }
 .landing .brand strong { display: block; font-size: 12px; font-weight: 600; letter-spacing: .03em; }
@@ -47,7 +61,55 @@
 .landing .section { width: min(1140px, 88%); margin: 0 auto; }.landing .apartment-section { padding: 116px 0 100px; }.landing .section-heading h2 { font-size: clamp(35px, 4vw, 55px); }.landing .section-intro { color: var(--muted); font-size: 12px; line-height: 1.9; max-width: 265px; margin: 4px 0 0; }.landing .split-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 42px; }.landing .gallery-wrap { display: grid; grid-template-columns: 1.5fr .8fr; gap: 64px; align-items: center; }.landing .gallery-main { position: relative; height: 470px; background: #e7eee8; overflow: hidden; }.landing .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: opacity .35s; }.landing .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; color: var(--ink); background: rgba(255,254,250,.94); transition: transform .25s, background .25s; }.landing .gallery-arrow:hover { transform: translateY(-50%) scale(1.08); background: #fff; }.landing .gallery-arrow.left { left: 18px; }.landing .gallery-arrow.right { right: 18px; }.landing .gallery-count { position: absolute; bottom: 19px; right: 22px; color: #fff; font-family: Georgia, serif; font-size: 15px; text-shadow: 0 1px 5px #333; }.landing .gallery-count span { font-family: 'Noto Sans Georgian'; font-size: 9px; opacity: .75; }.landing .gallery-info { padding-right: 8px; }.landing .gallery-info h3 { font-size: 36px; margin-bottom: 24px; }.landing .gallery-info > p:not(.eyebrow) { color: var(--muted); line-height: 2; font-size: 12px; margin-bottom: 27px; }.landing .amenities { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; display: grid; gap: 12px; margin-bottom: 28px; }.landing .amenities span { display: flex; gap: 9px; align-items: center; color: #4c5a55; font-size: 10px; }.landing .amenities svg { color: var(--bronze); }.landing .outline-button { display: inline-flex; align-items: center; gap: 19px; border: 1px solid var(--ink); padding: 13px 17px; font-size: 10px; transition: background .25s, color .25s; }.landing .outline-button:hover { background: var(--ink); color: #fff; }.landing .gallery-thumbs { display: flex; gap: 10px; margin-top: 17px; overflow: auto; padding-bottom: 4px; }.landing .gallery-thumbs button { width: 96px; height: 64px; flex: 0 0 auto; overflow: hidden; opacity: .47; border-bottom: 2px solid transparent; transition: opacity .25s, border .25s; }.landing .gallery-thumbs button.active, .landing .gallery-thumbs button:hover { opacity: 1; border-color: var(--bronze); }.landing .gallery-thumbs img { width: 100%; height: 100%; object-fit: cover; }
 .landing .story-section { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; background: #e2eee7; }.landing .story-image { min-height: 480px; overflow: hidden; }.landing .story-image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8); }.landing .story-copy { display: flex; flex-direction: column; justify-content: center; padding: 70px 10vw 70px 8vw; }.landing .story-copy h2 { font-size: clamp(38px, 4vw, 58px); margin-bottom: 26px; }.landing .story-copy > p:not(.eyebrow) { color: #52605c; font-size: 12px; line-height: 2; max-width: 330px; margin: 0 0 29px; }.landing .discover-section { padding: 120px 0 112px; }.landing .discover-section .section-heading { margin-bottom: 42px; }.landing .destination-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 175px; gap: 15px; }.landing .destination-card { position: relative; overflow: hidden; color: #fff; }.landing .destination-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }.landing .destination-card:hover img { transform: scale(1.06); }.landing .card-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,43,42,.78), transparent 65%); }.landing .destination-copy { position: absolute; inset: auto 20px 18px; }.landing .destination-copy span { color: #f1c1ab; font-size: 9px; }.landing .destination-copy h3 { font-size: 22px; margin: 4px 0 5px; }.landing .destination-copy p { margin: 0; font-size: 9px; }.landing .card-1 { grid-column: span 5; grid-row: span 2; }.landing .card-2 { grid-column: span 4; grid-row: span 2; }.landing .card-3, .landing .card-4, .landing .card-5, .landing .card-6 { grid-column: span 3; }.landing .card-3 { grid-column: span 3; }.landing .card-4 { grid-column: span 3; }.landing .card-5 { grid-column: span 3; }.landing .card-6 { grid-column: span 3; }
 .landing .guide-section { border-top: 1px solid var(--line); padding: 94px 0 110px; }.landing .guide-section .section-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 36px; }.landing .guide-section .eyebrow { margin-bottom: 0; }.landing .guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }.landing .guide-card { border: 1px solid var(--line); padding: 10px 10px 21px; background: rgba(255,254,250,.82); transition: transform .25s, box-shadow .25s; }.landing .guide-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(31,58,56,.1); }.landing .guide-image { height: 175px; position: relative; overflow: hidden; }.landing .guide-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }.landing .guide-card:hover .guide-image img { transform: scale(1.05); }.landing .guide-image span { position: absolute; bottom: 9px; right: 9px; display: grid; place-items: center; width: 28px; height: 28px; background: var(--cream); }.landing .guide-card > p { color: var(--bronze); text-transform: uppercase; letter-spacing: .11em; font-size: 8px; margin: 18px 0 8px; }.landing .guide-card h3 { font-size: 18px; margin-bottom: 15px; }.landing .guide-card small { color: var(--muted); font-size: 9px; border-bottom: 1px solid var(--bronze); padding-bottom: 5px; }.landing .site-footer { background: var(--dark); color: #edf5ef; padding: 38px 5.2vw 27px; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 30px; }.landing .footer-brand { display: flex; gap: 13px; align-items: center; }.landing .footer-brand .brand-mark { color: #f0bda7; }.landing .footer-brand strong { font-size: 11px; font-weight: 500; }.landing .footer-brand p { color: #a8b9b2; font-size: 9px; margin: 6px 0 0; }.landing .footer-contact { display: flex; justify-content: center; gap: 22px; color: #b7c7c0; font-size: 9px; }.landing .footer-contact span { display: flex; gap: 7px; align-items: center; }.landing .footer-contact svg { color: var(--bronze); }.landing .footer-end { display: flex; justify-content: end; gap: 25px; align-items: center; color: #9aaca5; font-size: 8px; }.landing .footer-end a { color: #f0bda7; display: flex; align-items: center; gap: 7px; }
-@media (max-width: 800px) { .landing .site-header { height: 62px; padding: 0 6%; }.landing .main-nav { position: fixed; inset: 0 0 auto; height: 100vh; background: var(--dark); flex-direction: column; justify-content: center; gap: 28px; margin: 0; transform: translateX(100%); transition: transform .3s; }.landing .main-nav.is-open { transform: translateX(0); }.landing .main-nav a { color: #fff; font-size: 16px; }.landing .nav-close { display: block; position: absolute; top: 22px; right: 6%; color: #fff; }.landing .menu-toggle { display: block; color: #fff; }.landing .header-book { display: none; }.landing .header-actions { gap: 15px; }.landing .hero { min-height: 620px; height: 75vh; padding: 0 8%; align-items: center; }.landing .hero h1 { font-size: clamp(41px, 11vw, 62px); }.landing .hero-copy { font-size: 11px; max-width: 280px; }.landing .hero-note { bottom: 53px; right: 8%; }.landing .scroll-cue { display: none; }.landing .booking-bar { width: 84%; margin-top: -47px; padding: 19px; display: grid; grid-template-columns: 1fr 1fr; gap: 19px 0; }.landing .booking-field { padding: 0 10px; border-right: 0; }.landing .booking-field:first-child { padding-left: 0; }.landing .booking-field:nth-child(2) { border-left: 1px solid var(--line); }.landing .booking-field:nth-child(3) { padding-left: 0; }.landing .booking-submit { margin: 0; width: 100%; justify-content: center; grid-column: 1 / -1; }.landing .section { width: 84%; }.landing .apartment-section, .landing .discover-section { padding: 85px 0; }.landing .split-heading { display: block; margin-bottom: 31px; }.landing .split-heading .section-intro { margin-top: 24px; }.landing .gallery-wrap { grid-template-columns: 1fr; gap: 36px; }.landing .gallery-main { height: 370px; }.landing .gallery-info { padding: 0; }.landing .gallery-info h3 { font-size: 31px; }.landing .story-section { grid-template-columns: 1fr; }.landing .story-image { min-height: 300px; height: 55vw; }.landing .story-copy { padding: 65px 8%; }.landing .destination-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; gap: 10px; }.landing .card-1, .landing .card-2 { grid-column: span 1; grid-row: span 2; }.landing .card-3, .landing .card-4, .landing .card-5, .landing .card-6 { grid-column: span 1; }.landing .destination-copy h3 { font-size: 16px; }.landing .guide-section { padding: 75px 0 84px; }.landing .guide-section .section-heading { display: block; }.landing .guide-section .section-heading h2 { margin-bottom: 23px; }.landing .guide-section .eyebrow { margin-bottom: 22px; }.landing .guide-grid { grid-template-columns: 1fr 1fr; gap: 10px; }.landing .guide-card { padding: 7px 7px 17px; }.landing .guide-image { height: 145px; }.landing .guide-card h3 { font-size: 15px; }.landing .site-footer { grid-template-columns: 1fr; gap: 28px; padding: 35px 8%; }.landing .footer-contact { justify-content: start; flex-direction: column; gap: 11px; }.landing .footer-end { justify-content: space-between; } }
+
+@media (max-width: 800px) { 
+  .landing .site-header { height: 62px; padding: 0 6%; top: 12px; left: 12px; right: 12px; width: auto; }
+  .landing .main-nav { position: fixed; inset: 0 0 auto; height: 100vh; background: var(--dark); flex-direction: column; justify-content: center; gap: 28px; margin: 0; transform: translateX(100%); transition: transform .3s; }
+  .landing .main-nav.is-open { transform: translateX(0); }
+  .landing .main-nav a { color: #fff; font-size: 16px; }
+  .landing .nav-close { display: block; position: absolute; top: 22px; right: 6%; color: #fff; }
+  .landing .menu-toggle { display: block; color: #fff; }
+  .landing .header-book { display: none; }
+  .landing .header-actions { gap: 15px; }
+  .landing .hero { min-height: 620px; height: 75vh; padding: 0 8%; align-items: center; }
+  .landing .hero h1 { font-size: clamp(41px, 11vw, 62px); }
+  .landing .hero-copy { font-size: 11px; max-width: 280px; }
+  .landing .hero-note { bottom: 53px; right: 8%; }
+  .landing .scroll-cue { display: none; }
+  .landing .booking-bar { width: 84%; margin-top: -47px; padding: 19px; display: grid; grid-template-columns: 1fr 1fr; gap: 19px 0; }
+  .landing .booking-field { padding: 0 10px; border-right: 0; }
+  .landing .booking-field:first-child { padding-left: 0; }
+  .landing .booking-field:nth-child(2) { border-left: 1px solid var(--line); }
+  .landing .booking-field:nth-child(3) { padding-left: 0; }
+  .landing .booking-submit { margin: 0; width: 100%; justify-content: center; grid-column: 1 / -1; }
+  .landing .section { width: 84%; }
+  .landing .apartment-section, .landing .discover-section { padding: 85px 0; }
+  .landing .split-heading { display: block; margin-bottom: 31px; }
+  .landing .split-heading .section-intro { margin-top: 24px; }
+  .landing .gallery-wrap { grid-template-columns: 1fr; gap: 36px; }
+  .landing .gallery-main { height: 370px; }
+  .landing .gallery-info { padding: 0; }
+  .landing .gallery-info h3 { font-size: 31px; }
+  .landing .story-section { grid-template-columns: 1fr; }
+  .landing .story-image { min-height: 300px; height: 55vw; }
+  .landing .story-copy { padding: 65px 8%; }
+  .landing .destination-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; gap: 10px; }
+  .landing .card-1, .landing .card-2 { grid-column: span 1; grid-row: span 2; }
+  .landing .card-3, .landing .card-4, .landing .card-5, .landing .card-6 { grid-column: span 1; }
+  .landing .destination-copy h3 { font-size: 16px; }
+  .landing .guide-section { padding: 75px 0 84px; }
+  .landing .guide-section .section-heading { display: block; }
+  .landing .guide-section .section-heading h2 { margin-bottom: 23px; }
+  .landing .guide-section .eyebrow { margin-bottom: 22px; }
+  .landing .guide-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .landing .guide-card { padding: 7px 7px 17px; }
+  .landing .guide-image { height: 145px; }
+  .landing .guide-card h3 { font-size: 15px; }
+  .landing .site-footer { grid-template-columns: 1fr; gap: 28px; padding: 35px 8%; }
+  .landing .footer-contact { justify-content: start; flex-direction: column; gap: 11px; }
+  .landing .footer-end { justify-content: space-between; } 
+}
+
 @media (prefers-reduced-motion: reduce) { .landing *, .landing *::before, .landing *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
 
 .landing, .landing * { box-sizing: border-box; }
@@ -55,7 +117,7 @@
 .landing .language-option { padding: 5px 7px; font-size: 10px; }
 .landing .language-option.active { opacity: 1; color: #f1c9b3; }
 .landing .booking-bar { display: block; width: min(1140px, 88%); padding: 21px 24px; }
-.landing .booking-form { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr 1fr auto; align-items: center; gap: 13px; }
+.landing .booking-form { display: grid; grid-template-columns: 1.2fr 1.2fr 1.0fr 1.0fr auto; align-items: center; gap: 13px; }
 .landing .booking-price { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding: 0 0 13px; color: var(--muted); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .landing .booking-price span { display: flex; gap: 8px; align-items: center; }
 .landing .booking-price svg, .landing .booking-field label svg { color: var(--bronze); flex: 0 0 auto; }
@@ -96,6 +158,7 @@
 .landing .whatsapp-button { position: fixed; z-index: 20; right: 24px; bottom: 24px; display: grid; width: 52px; height: 52px; place-items: center; border-radius: 50%; background: #1f3a38; color: #fff; box-shadow: 0 8px 24px rgba(20,43,42,.25); transition: transform .25s, background .25s; }
 .landing .whatsapp-button:hover { transform: translateY(-3px); background: #345955; }
 .landing a, .landing button { min-width: 44px; min-height: 44px; }
+
 @media (max-width: 800px) {
   .landing .booking-bar { width: 84%; padding: 19px; }
   .landing .booking-form { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -106,6 +169,7 @@
   .landing .location-copy { padding: 24px; }
   .landing .location-map, .landing .location-map iframe { min-height: 300px; }
 }
+
 @media (max-width: 480px) {
   .landing .brand strong { font-size: 10px; }
   .landing .brand small { font-size: 7px; }
