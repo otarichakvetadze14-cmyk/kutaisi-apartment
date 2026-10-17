@@ -15,7 +15,7 @@ import {
   DollarSign, 
   Users, 
   RefreshCw,
-  Phone,
+  Mail, // <-- Phone-ის ნაცვლად
   Moon
 } from 'lucide-react'
 
@@ -92,7 +92,6 @@ export default function AdminDashboard() {
     }
   }
 
-  // სტატუსის შეცვლა უსაფრთხო და აუცილებელი რეაქციით ბაზიდან
   const handleStatusChange = async (id: string, newStatus: Booking['status']) => {
     setActionLoading(id)
     try {
@@ -124,7 +123,7 @@ export default function AdminDashboard() {
     return bookings.filter((b) => {
       const matchesSearch =
         b.guest_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.guest_phone.includes(searchQuery)
+        (b.guest_email && b.guest_email.toLowerCase().includes(searchQuery.toLowerCase()))
       const matchesStatus = statusFilter === 'all' || b.status === statusFilter
       return matchesSearch && matchesStatus
     })
@@ -253,7 +252,7 @@ export default function AdminDashboard() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#006ce4]" />
             <input
               type="text"
-              placeholder="ძებნა სახელით ან ტელეფონით..."
+              placeholder="ძებნა სახელით ან ელფოსტით..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="min-h-[44px] w-full rounded-md border border-[#868686] bg-white px-3 py-2 pl-10 text-sm text-[#262626] outline-none transition-colors duration-150 placeholder:text-[#6b6b6b] focus:border-[#006ce4] focus:ring-2 focus:ring-[#006ce4]/30"
@@ -283,7 +282,7 @@ export default function AdminDashboard() {
               <thead className="border-b border-[#e7e7e7] bg-[#f5f5f5] text-xs font-bold text-[#6b6b6b]">
                 <tr>
                   <th className="px-6 py-3 font-bold">სტუმარი</th>
-                  <th className="px-6 py-3 font-bold">ტელეფონი</th>
+                  <th className="px-6 py-3 font-bold">ელფოსტა</th>
                   <th className="px-6 py-3 font-bold">თარიღები (ჩასვლა — გასვლა)</th>
                   <th className="px-6 py-3 font-bold">ღამეები</th>
                   <th className="px-6 py-3 font-bold">თანხა</th>
@@ -313,9 +312,9 @@ export default function AdminDashboard() {
                       <tr key={b.id} className={`bg-white transition-colors duration-150 hover:bg-[#f0f6ff] ${isProcessing ? 'pointer-events-none opacity-50' : ''}`}>
                         <td className="px-6 py-4 font-semibold text-[#262626]">{b.guest_name}</td>
                         <td className="px-6 py-4 text-sm text-[#262626]">
-                          <a href={`tel:${b.guest_phone}`} className="flex min-h-[44px] items-center gap-1.5 text-[#006ce4] transition-colors duration-150 hover:underline">
-                            <Phone className="w-3 h-3 text-[#006ce4]" />
-                            {b.guest_phone}
+                          <a href={`mailto:${b.guest_email}`} className="flex min-h-[44px] items-center gap-1.5 text-[#006ce4] transition-colors duration-150 hover:underline">
+                            <Mail className="w-3 h-3 text-[#006ce4]" />
+                            {b.guest_email || 'მითითებული არ არის'}
                           </a>
                         </td>
                         <td className="px-6 py-4 text-sm text-[#262626]">
@@ -328,7 +327,7 @@ export default function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4">
                           <span className="flex w-fit items-center gap-1 rounded-md bg-[#f5f5f5] px-2 py-1 text-xs text-[#262626]">
-                          <Moon className="w-3 h-3 text-[#006ce4]" />
+                            <Moon className="w-3 h-3 text-[#006ce4]" />
                             {nights} ღამე
                           </span>
                         </td>

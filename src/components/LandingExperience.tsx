@@ -16,7 +16,7 @@ import {
   Menu,
   MessageCircle,
   Navigation,
-  Phone,
+  Mail, // <-- Phone-ის ნაცვლად
   Search,
   Sparkles,
   Tag,
@@ -55,8 +55,8 @@ interface LandingExperienceProps {
   setLanguage: (language: Language) => void;
   guestName: string;
   setGuestName: (value: string) => void;
-  guestPhone: string;
-  setGuestPhone: (value: string) => void;
+  guestEmail: string; // <-- guestPhone-ის ნაცვლად
+  setGuestEmail: (value: string) => void; // <-- setGuestPhone-ის ნაცვლად
   startDate: string;
   setStartDate: (value: string) => void;
   endDate: string;
@@ -87,8 +87,8 @@ export default function LandingExperience({
   setLanguage,
   guestName,
   setGuestName,
-  guestPhone,
-  setGuestPhone,
+  guestEmail, // <-- guestPhone-ის ნაცვლად
+  setGuestEmail, // <-- setGuestPhone-ის ნაცვლად
   startDate,
   setStartDate,
   endDate,
@@ -116,25 +116,26 @@ export default function LandingExperience({
 
   return (
     <div className="landing site-shell">
-      <header className="site-header flex items-center pt-6 px-6">
-        <a className="brand" href="#top" aria-label={text.brand}>
-          <span className="brand-mark">K</span>
-          <span>
-            <strong>{text.brand}</strong>
-            <small>{text.tagline}</small>
+      {/* 1. HEADER */}
+      <header className="site-header flex items-center justify-between py-4 px-6 sm:px-8 border-b border-white/20">
+        <a className="brand flex items-center gap-3" href="#top" aria-label={text.brand}>
+          <span className="brand-mark w-8 h-8 border border-current grid place-items-center font-serif text-base shrink-0">K</span>
+          <span className="flex flex-col">
+            <strong className="text-xs font-semibold tracking-wide leading-tight">{text.brand}</strong>
+            <small className="text-[8px] tracking-widest uppercase opacity-80 mt-0.5">{text.tagline}</small>
           </span>
         </a>
 
         <nav
           aria-label={text.mainNavigation}
-          className={`main-nav ${menuOpen ? 'is-open' : ''}`}
+          className={`main-nav flex items-center gap-8 ${menuOpen ? 'is-open' : ''}`}
         >
-          <a href="#apartments" onClick={() => setMenuOpen(false)}>{text.navGallery}</a>
-          <a href="#location" onClick={() => setMenuOpen(false)}>{text.navLocation}</a>
-          <a href="#recommendations" onClick={() => setMenuOpen(false)}>{text.navRecommendations}</a>
-          <a href="#restaurants" onClick={() => setMenuOpen(false)}>{text.navRestaurants}</a>
+          <a href="#apartments" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navGallery}</a>
+          <a href="#location" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navLocation}</a>
+          <a href="#recommendations" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navRecommendations}</a>
+          <a href="#restaurants" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navRestaurants}</a>
           <button
-            className="nav-close"
+            className="nav-close md:hidden"
             type="button"
             onClick={() => setMenuOpen(false)}
             aria-label={text.closeMenu}
@@ -143,14 +144,14 @@ export default function LandingExperience({
           </button>
         </nav>
 
-        <div className="header-actions">
-          <div role="group" aria-label={text.languageLabel} className="language-switcher">
+        <div className="header-actions flex items-center gap-6">
+          <div role="group" aria-label={text.languageLabel} className="language-switcher flex items-center gap-1">
             {(['ge', 'en'] as const).map((option) => (
               <button
                 key={option}
                 type="button"
                 aria-pressed={language === option}
-                className={`language-option ${language === option ? 'active' : ''}`}
+                className={`language-option min-w-[36px] min-h-[36px] flex items-center justify-center text-xs transition ${language === option ? 'font-bold underline' : 'opacity-70'}`}
                 onClick={() => setLanguage(option)}
               >
                 {option === 'ge' ? 'ქარ' : 'ENG'}
@@ -158,9 +159,9 @@ export default function LandingExperience({
             ))}
             <ChevronDown size={13} aria-hidden="true" />
           </div>
-          <a className="header-book" href="#booking">{text.bookNow}</a>
+          <a className="header-book min-h-[44px] px-6 inline-flex items-center justify-center border border-white/70 text-xs uppercase tracking-wider transition hover:bg-white hover:text-black" href="#booking">{text.bookNow}</a>
           <button
-            className="menu-toggle"
+            className="menu-toggle md:hidden"
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label={text.openMenu}
@@ -172,6 +173,7 @@ export default function LandingExperience({
       </header>
 
       <main id="top">
+        {/* HERO SECTION */}
         <section className="hero">
           <div className="hero-image">
             <Image
@@ -198,10 +200,11 @@ export default function LandingExperience({
           <div className="scroll-cue"><span>{text.scrollDown}</span><i /></div>
         </section>
 
-        <section className="booking-bar" id="booking" aria-label={text.bookNow}>
-          <form onSubmit={onBooking} className="booking-form">
-            <div className="booking-price">
-              <span>
+        {/* 2. BOOKING BAR */}
+        <section className="booking-bar max-w-6xl mx-auto -mt-10 relative z-10 p-6 bg-white/98 shadow-xl" id="booking" aria-label={text.bookNow}>
+          <form onSubmit={onBooking} className="booking-form grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <div className="booking-price md:col-span-5 flex items-center justify-between pb-2 border-b border-neutral-100">
+              <span className="flex items-center gap-2 text-sm">
                 <Tag size={15} aria-hidden="true" /> {text.pricePrefix}{' '}
                 <strong>
                   {pricePerNight === null
@@ -210,13 +213,16 @@ export default function LandingExperience({
                 </strong>
               </span>
               {nights > 0 && (
-                <strong className="booking-total">
+                <strong className="booking-total text-sm font-serif">
                   {nights} {language === 'ge' ? 'ღამე' : 'nights'} · {formatCurrency(totalPrice, language === 'ge' ? 'ka-GE' : 'en-US', currency)}
                 </strong>
               )}
             </div>
-            <div className="booking-field">
-              <label htmlFor="guest-name"><User size={17} aria-hidden="true" />{text.guestName}</label>
+
+            <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
+              <label htmlFor="guest-name" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+                <User size={15} aria-hidden="true" />{text.guestName}
+              </label>
               <input
                 id="guest-name"
                 type="text"
@@ -225,21 +231,27 @@ export default function LandingExperience({
                 placeholder={text.guestNamePlaceholder}
                 value={guestName}
                 onChange={(event) => setGuestName(event.target.value)}
+                className="w-full text-sm outline-none bg-transparent"
               />
             </div>
-            <div className="booking-field">
-              <label htmlFor="guest-phone"><Phone size={17} aria-hidden="true" />{text.phone}</label>
+
+            <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
+              <label htmlFor="guest-email" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+                <Mail size={15} aria-hidden="true" />{language === 'ge' ? 'ელფოსტა' : 'Email'}
+              </label>
               <input
-                id="guest-phone"
-                type="tel"
+                id="guest-email"
+                type="email"
                 required
-                autoComplete="tel"
-                placeholder="+995 555 12 34 56"
-                value={guestPhone}
-                onChange={(event) => setGuestPhone(event.target.value)}
+                autoComplete="email"
+                placeholder="your@email.com"
+                value={guestEmail}
+                onChange={(event) => setGuestEmail(event.target.value)}
+                className="w-full text-sm outline-none bg-transparent px-1"
               />
             </div>
-            <div className="booking-field">
+
+            <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <DatePicker
                 id="check-in"
                 label={text.checkIn}
@@ -252,10 +264,11 @@ export default function LandingExperience({
                   setStartDate(date)
                   if (endDate && date >= endDate) setEndDate('')
                 }}
-                triggerClassName="landing-date-trigger"
+                triggerClassName="landing-date-trigger w-full text-sm text-left bg-transparent"
               />
             </div>
-            <div className="booking-field">
+
+            <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <DatePicker
                 id="check-out"
                 label={text.checkOut}
@@ -265,32 +278,26 @@ export default function LandingExperience({
                 bookings={availabilityBookings}
                 disabled={!startDate || availabilityLoading || availabilityError !== null}
                 onChange={setEndDate}
-                triggerClassName="landing-date-trigger"
+                triggerClassName="landing-date-trigger w-full text-sm text-left bg-transparent"
               />
             </div>
+
             <button
-              className="booking-submit"
+              className="booking-submit min-h-[64px] h-full w-full bg-neutral-900 text-white rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider hover:bg-neutral-800 transition px-6"
               type="submit"
               disabled={loading || priceLoading || pricePerNight === null || priceError !== null || availabilityLoading || availabilityError !== null}
             >
-              {loading ? text.loading : text.bookNow}
+              <span>{loading ? text.loading : text.bookNow}</span>
               <Search size={16} aria-hidden="true" />
             </button>
           </form>
-          {successMessage && <p className="booking-feedback success" role="status">{successMessage}</p>}
-          {errorMessage && <p className="booking-feedback error" role="alert">{errorMessage}</p>}
-          {priceError && (
-            <p className="booking-feedback error" role="alert">
-              {text.priceUnavailable}
-            </p>
-          )}
-          {availabilityError && (
-            <p className="booking-feedback error" role="alert">
-              {text.availabilityCheckFailed}
-            </p>
-          )}
+          {successMessage && <p className="booking-feedback success mt-3 text-sm text-emerald-700">{successMessage}</p>}
+          {errorMessage && <p className="booking-feedback error mt-3 text-sm text-rose-700">{errorMessage}</p>}
+          {priceError && <p className="booking-feedback error mt-3 text-sm text-rose-700">{text.priceUnavailable}</p>}
+          {availabilityError && <p className="booking-feedback error mt-3 text-sm text-rose-700">{text.availabilityCheckFailed}</p>}
         </section>
 
+        {/* APARTMENT SECTION */}
         <section className="section apartment-section" id="apartments">
           <div className="section-heading split-heading">
             <div>
@@ -305,8 +312,7 @@ export default function LandingExperience({
                 src={galleryData[galleryIndex].imagePath}
                 alt={galleryData[galleryIndex].title[language]}
                 width={1200}
-                height={800}
-                unoptimized
+                height={1200}
                 sizes="(min-width: 800px) 60vw, 90vw"
                 loading="lazy"
                 decoding="async"
@@ -357,7 +363,7 @@ export default function LandingExperience({
                   alt={photo.title[language]}
                   width={192}
                   height={128}
-                  unoptimized
+                  sizes="96px"
                   loading="lazy"
                   decoding="async"
                 />
@@ -366,14 +372,14 @@ export default function LandingExperience({
           </div>
         </section>
 
+        {/* STORY SECTION */}
         <section className="story-section">
           <div className="story-image">
             <Image
-              src={attractionsData[5].imagePath}
+              src={attractionsData[5]?.imagePath || attractionsData[0].imagePath}
               alt={text.cityLabel}
-              width={1000}
-              height={800}
-              unoptimized
+              width={1920}
+              height={1080}
               sizes="(min-width: 800px) 50vw, 100vw"
               loading="lazy"
               decoding="async"
@@ -389,6 +395,7 @@ export default function LandingExperience({
           </div>
         </section>
 
+        {/* LOCATION SECTION */}
         <section className="section location-section" id="location">
           <div className="section-heading">
             <p className="eyebrow"><span />{text.locationEyebrow}</p>
@@ -417,16 +424,18 @@ export default function LandingExperience({
           </div>
         </section>
 
-        <section className="section discover-section" id="recommendations">
-          <div className="section-heading">
+        {/* 3. „აღმოაჩინე ქუთაისი“ - თანაბარი ბარათები */}
+        <section className="section discover-section max-w-7xl mx-auto px-4 py-16" id="recommendations">
+          <div className="section-heading mb-10">
             <p className="eyebrow"><span />{text.discoverEyebrow}</p>
             <h2>{text.discoverTitle} <em>{text.discoverAccent}</em></h2>
-            <p className="section-intro">{text.discoverDescription}</p>
+            <p className="section-intro max-w-2xl mt-2 text-neutral-600">{text.discoverDescription}</p>
           </div>
-          <div className="destination-grid">
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {attractionsData.map((attraction, index) => (
               <a
-                className={`destination-card card-${index + 1}`}
+                className="group relative flex flex-col h-[320px] rounded-2xl overflow-hidden shadow-sm border border-neutral-200/80 transition hover:shadow-md"
                 href={attraction.locationUrl}
                 key={attraction.title.en}
                 target="_blank"
@@ -436,22 +445,22 @@ export default function LandingExperience({
                   src={attraction.imagePath}
                   alt={attraction.title[language]}
                   fill
-                  unoptimized
-                  sizes="(min-width: 800px) 35vw, 90vw"
+                  sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, calc(100vw - 2rem)"
                   loading="lazy"
                   decoding="async"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
-                <span className="card-shade" />
-                <span className="destination-copy">
-                  <span>0{index + 1}</span>
-                  <h3>{attraction.title[language]}</h3>
-                  <span>{attraction.distance[language]}</span>
+                <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <span className="relative z-10 mt-auto p-6 flex flex-col text-white">
+                  <span className="text-xs font-semibold text-amber-400 tracking-wider mb-1">0{index + 1} · {attraction.distance[language]}</span>
+                  <h3 className="text-xl font-serif font-medium">{attraction.title[language]}</h3>
                 </span>
               </a>
             ))}
           </div>
         </section>
 
+        {/* RESTAURANTS GUIDE */}
         <section className="section guide-section" id="restaurants">
           <div className="section-heading">
             <p className="eyebrow"><span />{text.hostFavorites}</p>
@@ -471,7 +480,6 @@ export default function LandingExperience({
                     src={restaurant.imagePath}
                     alt={restaurant.title[language]}
                     fill
-                    unoptimized
                     sizes="(min-width: 800px) 25vw, 45vw"
                     loading="lazy"
                     decoding="async"

@@ -15,7 +15,7 @@ export function BookingForm() {
     error: priceError,
   } = useApartmentPrice()
   const [guestName, setGuestName] = useState('')
-  const [guestPhone, setGuestPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [loading, setLoading] = useState(false)
@@ -45,7 +45,7 @@ export function BookingForm() {
     setSuccessMessage(null)
     setErrorMessage(null)
 
-    if (!guestName || !guestPhone || !startDate || !endDate) {
+    if (!guestName || !email || !startDate || !endDate) {
       setErrorMessage('გთხოვთ შეავსოთ ყველა ველი!')
       return
     }
@@ -77,13 +77,12 @@ export function BookingForm() {
         return
       }
 
-      // Supabase-ის daterange ტიპის ფორმატი: [start_date, end_date]
       const dateRange = `[${startDate},${endDate}]`
 
       const { error } = await supabase.from('bookings').insert([
         {
           guest_name: guestName,
-          guest_phone: guestPhone,
+          guest_email: email, // <-- ტელეფონის ნაცვლად ვწერთ guest_email-ს
           date_range: dateRange,
           total_price: totalPrice,
           status: 'pending',
@@ -94,7 +93,7 @@ export function BookingForm() {
 
       setSuccessMessage('ჯავშანი წარმატებით გაიგზავნა! მენეჯერი მალე დაგიკავშირდებათ.')
       setGuestName('')
-      setGuestPhone('')
+      setEmail('')
       setStartDate('')
       setEndDate('')
     } catch (err: unknown) {
@@ -106,7 +105,7 @@ export function BookingForm() {
   }
 
   return (
-    <div className="bg-white rounded-3xl p-8 border border-neutral-200/80 shadow-xl shadow-neutral-100 sticky top-28">
+    <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-xl shadow-neutral-100 sticky top-28 w-full max-w-lg mx-auto box-border">
       <div className="flex justify-between items-baseline mb-6 pb-6 border-b border-neutral-100">
         <div>
           <span className="text-3xl font-serif font-medium text-neutral-900">
@@ -143,7 +142,8 @@ export function BookingForm() {
       )}
 
       <form onSubmit={handleBooking} className="space-y-4">
-        <div>
+        {/* სრული სახელი */}
+        <div className="w-full">
           <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">სახელი</label>
           <input
             type="text"
@@ -151,24 +151,26 @@ export function BookingForm() {
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
             placeholder="მაგ: გიორგი ბერიძე"
-            className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 text-sm transition"
+            className="w-full min-h-[48px] px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 text-sm transition box-border"
           />
         </div>
 
-        <div>
-          <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">ტელეფონი</label>
+        {/* ელფოსტა */}
+        <div className="w-full">
+          <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">ელფოსტა</label>
           <input
-            type="tel"
+            type="email"
             required
-            value={guestPhone}
-            onChange={(e) => setGuestPhone(e.target.value)}
-            placeholder="+995 555 12 34 56"
-            className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 text-sm transition"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="w-full min-h-[48px] px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 text-sm transition box-border"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
+        {/* ჩასვლა და გასვლა - თანაბარი სიგანის სექციები */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+          <div className="w-full">
             <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">ჩასვლა</label>
             <DatePicker
               id="booking-check-in"
@@ -182,10 +184,10 @@ export function BookingForm() {
                 setStartDate(date)
                 if (endDate && date >= endDate) setEndDate('')
               }}
-              triggerClassName="flex min-h-[44px] w-full items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-3 text-left text-sm transition hover:border-neutral-400 disabled:opacity-50"
+              triggerClassName="flex min-h-[48px] w-full items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-left text-sm transition hover:border-neutral-400 disabled:opacity-50 box-border"
             />
           </div>
-          <div>
+          <div className="w-full">
             <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">გასვლა</label>
             <DatePicker
               id="booking-check-out"
@@ -196,7 +198,7 @@ export function BookingForm() {
               bookings={availabilityBookings}
               disabled={!startDate || availabilityLoading || availabilityError !== null}
               onChange={setEndDate}
-              triggerClassName="flex min-h-[44px] w-full items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-3 text-left text-sm transition hover:border-neutral-400 disabled:opacity-50"
+              triggerClassName="flex min-h-[48px] w-full items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-left text-sm transition hover:border-neutral-400 disabled:opacity-50 box-border"
             />
           </div>
         </div>
@@ -217,7 +219,7 @@ export function BookingForm() {
         <button
           type="submit"
           disabled={loading || priceLoading || pricePerNight === null || priceError !== null || availabilityLoading || availabilityError !== null}
-          className="min-h-[44px] w-full py-4 bg-neutral-900 text-white font-medium text-sm rounded-xl hover:bg-neutral-800 transition shadow-sm disabled:opacity-50 tracking-wide mt-2"
+          className="min-h-[48px] w-full py-4 bg-neutral-900 text-white font-medium text-sm rounded-xl hover:bg-neutral-800 transition shadow-sm disabled:opacity-50 tracking-wide mt-2"
         >
           {loading ? 'იგზავნება...' : 'ჯავშნის მოთხოვნა'}
         </button>

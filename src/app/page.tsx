@@ -274,7 +274,7 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>('ge');
   const text = copy[language];
   const [guestName, setGuestName] = useState('');
-  const [guestPhone, setGuestPhone] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
@@ -315,7 +315,7 @@ export default function Home() {
     setSuccessMessage(null);
     setErrorMessage(null);
 
-    if (!guestName || !guestPhone || !startDate || !endDate) {
+    if (!guestName || !guestEmail || !startDate || !endDate) {
       setErrorMessage(text.requiredFields);
       return;
     }
@@ -357,7 +357,7 @@ export default function Home() {
       const { error } = await supabase.from('bookings').insert([
         {
           guest_name: guestName,
-          guest_phone: guestPhone,
+          guest_email: guestEmail,
           date_range: dateRange,
           total_price: totalPrice,
           status: 'pending',
@@ -368,7 +368,7 @@ export default function Home() {
 
       setSuccessMessage(text.bookingSuccess);
       setGuestName('');
-      setGuestPhone('');
+      setGuestEmail('');
       setStartDate('');
       setEndDate('');
     } catch (err) {
@@ -386,8 +386,8 @@ export default function Home() {
       setLanguage={setLanguage}
       guestName={guestName}
       setGuestName={setGuestName}
-      guestPhone={guestPhone}
-      setGuestPhone={setGuestPhone}
+      guestEmail={guestEmail}
+      setGuestEmail={setGuestEmail}
       startDate={startDate}
       setStartDate={setStartDate}
       endDate={endDate}

@@ -5,7 +5,7 @@ export interface Booking {
   id: string
   created_at: string
   guest_name: string
-  guest_phone: string
+  guest_email: string // <-- guest_phone-ის ნაცვლად
   date_range: string
   status: 'pending' | 'confirmed' | 'cancelled'
   total_price: number
@@ -23,7 +23,7 @@ function parseBooking(value: unknown): Booking | null {
     typeof booking.id !== 'string' ||
     typeof booking.created_at !== 'string' ||
     typeof booking.guest_name !== 'string' ||
-    typeof booking.guest_phone !== 'string' ||
+    typeof booking.guest_email !== 'string' || // <-- guest_phone-ის ნაცვლად
     typeof booking.date_range !== 'string' ||
     (booking.status !== 'pending' && booking.status !== 'confirmed' && booking.status !== 'cancelled')
   ) {
@@ -41,7 +41,7 @@ function parseBooking(value: unknown): Booking | null {
     id: booking.id,
     created_at: booking.created_at,
     guest_name: booking.guest_name,
-    guest_phone: booking.guest_phone,
+    guest_email: booking.guest_email, // <-- guest_phone-ის ნაცვლად
     date_range: booking.date_range,
     status: booking.status,
     total_price: totalPrice,
