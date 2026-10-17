@@ -116,7 +116,7 @@ export default function LandingExperience({
 
   return (
     <div className="landing site-shell">
-      <header className="site-header flex items-center">
+      <header className="site-header flex items-center pt-6 px-6">
         <a className="brand" href="#top" aria-label={text.brand}>
           <span className="brand-mark">K</span>
           <span>
