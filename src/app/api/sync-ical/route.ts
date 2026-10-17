@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import ical from 'node-ical';
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase სერვისის ინიციალიზაცია
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -19,7 +18,6 @@ export async function GET() {
       );
     }
 
-    // iCal ფიდის წამოღება
     const webEvents = await ical.async.fromURL(icalUrl);
     let newBookingsCount = 0;
 
@@ -32,7 +30,6 @@ export async function GET() {
         const endDate = event.end.toISOString().split('T')[0];
         const guestName = event.summary || 'External Booking';
 
-        // ვამოწმებთ, არსებობს თუ არა უკვე ეს ჯავშანი ბაზაში
         const { data: existing } = await supabase
           .from('bookings')
           .select('id')
@@ -40,7 +37,6 @@ export async function GET() {
           .single();
 
         if (!existing) {
-          // თუ არ არსებობს, ვამატებთ
           const { error: insertError } = await supabase.from('bookings').insert([
             {
               external_id: externalId,
@@ -69,4 +65,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+}// Test deployment fix
