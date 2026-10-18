@@ -22,7 +22,7 @@ export async function GET() {
     let newBookingsCount = 0;
 
     for (const key in webEvents) {
-      const event = webEvents[key];
+      const event = webEvents[key]!;
 
       if (event.type === 'VEVENT' && event.start && event.end) {
         const externalId = event.uid || `${event.start.toISOString()}-${event.summary}`;
