@@ -275,6 +275,7 @@ export default function Home() {
   const text = copy[language];
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
+  const [guests, setGuests] = useState<number>(1);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
@@ -298,6 +299,11 @@ export default function Home() {
     document.documentElement.lang = language === 'ge' ? 'ka' : 'en';
   }, [language]);
 
+  // დინამიური ფასი სტუმრების რაოდენობის მიხედვით (+10₾ ყოველ დამატებით სტუმარზე)
+  const basePrice = pricePerNight ?? 0;
+  const extraGuestPrice = 10;
+  const effectivePricePerNight = basePrice + (guests - 1) * extraGuestPrice;
+
   const calculateNights = () => {
     if (!startDate || !endDate) return 0;
     const start = new Date(startDate);
@@ -308,7 +314,7 @@ export default function Home() {
   };
 
   const nights = calculateNights();
-  const totalPrice = nights * (pricePerNight ?? 0);
+  const totalPrice = nights * effectivePricePerNight;
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -320,12 +326,7 @@ export default function Home() {
       return;
     }
 
-    if (pricePerNight === null) {
-      setErrorMessage(text.priceUnavailable);
-      return;
-    }
-
-    if (priceError) {
+    if (pricePerNight === null || priceError) {
       setErrorMessage(text.priceUnavailable);
       return;
     }
@@ -369,6 +370,7 @@ export default function Home() {
       setSuccessMessage(text.bookingSuccess);
       setGuestName('');
       setGuestEmail('');
+      setGuests(1);
       setStartDate('');
       setEndDate('');
     } catch (err) {
@@ -388,6 +390,8 @@ export default function Home() {
       setGuestName={setGuestName}
       guestEmail={guestEmail}
       setGuestEmail={setGuestEmail}
+      guests={guests}
+      setGuests={setGuests}
       startDate={startDate}
       setStartDate={setStartDate}
       endDate={endDate}
@@ -397,7 +401,7 @@ export default function Home() {
       errorMessage={errorMessage}
       galleryIndex={galleryIndex}
       setGalleryIndex={setGalleryIndex}
-      pricePerNight={pricePerNight}
+      pricePerNight={effectivePricePerNight}
       currency={currency}
       availabilityBookings={availabilityBookings}
       availabilityLoading={availabilityLoading}
