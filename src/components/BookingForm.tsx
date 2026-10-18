@@ -16,6 +16,7 @@ export function BookingForm() {
   } = useApartmentPrice()
   const [guestName, setGuestName] = useState('')
   const [email, setEmail] = useState('')
+  const [guests, setGuests] = useState<number>(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,11 @@ export function BookingForm() {
     checkAvailability,
   } = useBookingAvailability()
 
+  // ადმინ პანელიდან წამოღებული ფასი 1 სტუმრისთვის + ყოველ დამატებითზე +10 ₾
+  const basePrice = pricePerNight ?? 0
+  const extraGuestPrice = 10
+  const effectivePricePerNight = basePrice + (guests - 1) * extraGuestPrice
+
   const calculateNights = () => {
     if (!startDate || !endDate) return 0
     const start = new Date(startDate)
@@ -38,7 +44,7 @@ export function BookingForm() {
   }
 
   const nights = calculateNights()
-  const totalPrice = nights * (pricePerNight ?? 0)
+  const totalPrice = nights * effectivePricePerNight
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,7 +88,7 @@ export function BookingForm() {
       const { error } = await supabase.from('bookings').insert([
         {
           guest_name: guestName,
-          guest_email: email, // <-- ტელეფონის ნაცვლად ვწერთ guest_email-ს
+          guest_email: email,
           date_range: dateRange,
           total_price: totalPrice,
           status: 'pending',
@@ -94,6 +100,7 @@ export function BookingForm() {
       setSuccessMessage('ჯავშანი წარმატებით გაიგზავნა! მენეჯერი მალე დაგიკავშირდებათ.')
       setGuestName('')
       setEmail('')
+      setGuests(1)
       setStartDate('')
       setEndDate('')
     } catch (err: unknown) {
@@ -109,7 +116,7 @@ export function BookingForm() {
       <div className="flex justify-between items-baseline mb-6 pb-6 border-b border-neutral-100">
         <div>
           <span className="text-3xl font-serif font-medium text-neutral-900">
-            {pricePerNight === null ? '—' : formatCurrency(pricePerNight, 'ka-GE', currency)}
+            {pricePerNight === null ? '—' : formatCurrency(effectivePricePerNight, 'ka-GE', currency)}
           </span>
           <span className="text-neutral-700 text-sm font-light"> / ღამე</span>
         </div>
@@ -168,7 +175,22 @@ export function BookingForm() {
           />
         </div>
 
-        {/* ჩასვლა და გასვლა - თანაბარი სიგანის სექციები */}
+        {/* სტუმრების რაოდენობა (მაქს. 4) */}
+        <div className="w-full">
+          <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">სტუმრები</label>
+          <select
+            value={guests}
+            onChange={(e) => setGuests(Number(e.target.value))}
+            className="w-full min-h-[48px] px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 text-sm transition box-border cursor-pointer"
+          >
+            <option value={1}>1 სტუმარი ({pricePerNight ?? 0} ₾ / ღამე)</option>
+            <option value={2}>2 სტუმარი ({(pricePerNight ?? 0) + 10} ₾ / ღამე)</option>
+            <option value={3}>3 სტუმარი ({(pricePerNight ?? 0) + 20} ₾ / ღამე)</option>
+            <option value={4}>4 სტუმარი ({(pricePerNight ?? 0) + 30} ₾ / ღამე)</option>
+          </select>
+        </div>
+
+        {/* ჩასვლა და გასვლა */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
           <div className="w-full">
             <label className="block text-xs uppercase font-semibold tracking-wider text-neutral-700 mb-2">ჩასვლა</label>
@@ -207,7 +229,7 @@ export function BookingForm() {
           <div className="py-4 px-5 bg-neutral-50 rounded-2xl space-y-2 border border-neutral-100">
             <div className="flex justify-between text-sm text-neutral-700 font-light">
               <span>ხანგრძლივობა:</span>
-              <span>{nights} ღამე</span>
+              <span>{nights} ღამე ({guests} სტუმარი)</span>
             </div>
             <div className="flex justify-between text-base font-serif font-medium text-neutral-900 pt-2 border-t border-neutral-200/60">
               <span>ჯამური თანხა:</span>
