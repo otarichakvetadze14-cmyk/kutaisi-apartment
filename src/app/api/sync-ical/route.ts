@@ -44,11 +44,12 @@ export async function GET() {
           // Supabase daterange ფორმატი: [YYYY-MM-DD,YYYY-MM-DD)
           const dateRangeString = `[${startDate},${endDate})`;
 
-          const { error: insertError } = await supabase.from('bookings').insert([
+         const { error: insertError } = await supabase.from('bookings').insert([
             {
               external_id: externalId,
               source: 'iCal_Sync',
               guest_name: guestName,
+              guest_email: 'booking_guest@import.local', // დიფოლტ მეილი iCal ჯავშნებისთვის
               date_range: dateRangeString,
               status: 'confirmed',
             },
