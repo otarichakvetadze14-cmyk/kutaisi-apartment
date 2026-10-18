@@ -16,11 +16,12 @@ import {
   Menu,
   MessageCircle,
   Navigation,
-  Mail, // <-- Phone-ის ნაცვლად
+  Mail,
   Search,
   Sparkles,
   Tag,
   User,
+  Users,
   Wifi,
   X,
 } from 'lucide-react';
@@ -55,8 +56,10 @@ interface LandingExperienceProps {
   setLanguage: (language: Language) => void;
   guestName: string;
   setGuestName: (value: string) => void;
-  guestEmail: string; // <-- guestPhone-ის ნაცვლად
-  setGuestEmail: (value: string) => void; // <-- setGuestPhone-ის ნაცვლად
+  guestEmail: string;
+  setGuestEmail: (value: string) => void;
+  guests: number;
+  setGuests: (value: number) => void;
   startDate: string;
   setStartDate: (value: string) => void;
   endDate: string;
@@ -87,8 +90,10 @@ export default function LandingExperience({
   setLanguage,
   guestName,
   setGuestName,
-  guestEmail, // <-- guestPhone-ის ნაცვლად
-  setGuestEmail, // <-- setGuestPhone-ის ნაცვლად
+  guestEmail,
+  setGuestEmail,
+  guests,
+  setGuests,
   startDate,
   setStartDate,
   endDate,
@@ -202,8 +207,8 @@ export default function LandingExperience({
 
         {/* 2. BOOKING BAR */}
         <section className="booking-bar max-w-6xl mx-auto -mt-10 relative z-10 p-6 bg-white/98 shadow-xl" id="booking" aria-label={text.bookNow}>
-          <form onSubmit={onBooking} className="booking-form grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-            <div className="booking-price md:col-span-5 flex items-center justify-between pb-2 border-b border-neutral-100">
+          <form onSubmit={onBooking} className="booking-form grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+            <div className="booking-price md:col-span-6 flex items-center justify-between pb-2 border-b border-neutral-100">
               <span className="flex items-center gap-2 text-sm">
                 <Tag size={15} aria-hidden="true" /> {text.pricePrefix}{' '}
                 <strong>
@@ -214,11 +219,12 @@ export default function LandingExperience({
               </span>
               {nights > 0 && (
                 <strong className="booking-total text-sm font-serif">
-                  {nights} {language === 'ge' ? 'ღამე' : 'nights'} · {formatCurrency(totalPrice, language === 'ge' ? 'ka-GE' : 'en-US', currency)}
+                  {nights} {language === 'ge' ? 'ღამე' : 'nights'} ({guests} {language === 'ge' ? 'სტუმარი' : 'guests'}) · {formatCurrency(totalPrice, language === 'ge' ? 'ka-GE' : 'en-US', currency)}
                 </strong>
               )}
             </div>
 
+            {/* სახელი */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <label htmlFor="guest-name" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
                 <User size={15} aria-hidden="true" />{text.guestName}
@@ -235,6 +241,7 @@ export default function LandingExperience({
               />
             </div>
 
+            {/* ელფოსტა */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <label htmlFor="guest-email" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
                 <Mail size={15} aria-hidden="true" />{language === 'ge' ? 'ელფოსტა' : 'Email'}
@@ -251,6 +258,25 @@ export default function LandingExperience({
               />
             </div>
 
+            {/* სტუმრები (1-4) */}
+            <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
+              <label htmlFor="guest-count" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+                <Users size={15} aria-hidden="true" />{language === 'ge' ? 'სტუმრები' : 'Guests'}
+              </label>
+              <select
+                id="guest-count"
+                value={guests}
+                onChange={(event) => setGuests(Number(event.target.value))}
+                className="w-full text-sm outline-none bg-transparent cursor-pointer"
+              >
+                <option value={1}>1 {language === 'ge' ? 'სტუმარი' : 'Guest'}</option>
+                <option value={2}>2 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
+                <option value={3}>3 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
+                <option value={4}>4 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
+              </select>
+            </div>
+
+            {/* ჩასვლა */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <DatePicker
                 id="check-in"
@@ -268,6 +294,7 @@ export default function LandingExperience({
               />
             </div>
 
+            {/* გასვლა */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <DatePicker
                 id="check-out"
@@ -282,6 +309,7 @@ export default function LandingExperience({
               />
             </div>
 
+            {/* დაჯავშნის ღილაკი */}
             <button
               className="booking-submit min-h-[64px] h-full w-full bg-neutral-900 text-white rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider hover:bg-neutral-800 transition px-6"
               type="submit"
