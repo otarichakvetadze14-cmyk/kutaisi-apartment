@@ -535,7 +535,6 @@ export default function LandingExperience({
         <div className="footer-end">
           <span>© 2026 Kutaisi Central Square. {text.copyright}</span>
           <a href="#top">{text.backToTop} <ArrowRight size={14} aria-hidden="true" /></a>
-          <a href="/admin" title={text.adminLogin}>{text.adminPanel}</a>
         </div>
       </footer>
 
