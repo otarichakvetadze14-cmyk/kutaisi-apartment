@@ -7,6 +7,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const APARTMENT_ID = '9d771e66-0599-4045-91ba-beff9f107304';
+
 export async function GET() {
   try {
     const icalUrl = process.env.BOOKING_ICAL_URL;
@@ -20,6 +22,7 @@ export async function GET() {
 
     const webEvents = await ical.async.fromURL(icalUrl);
     let newBookingsCount = 0;
+    let errors: any[] = [];
 
     for (const key in webEvents) {
       const event = webEvents[key]!;
@@ -28,26 +31,34 @@ export async function GET() {
         const externalId = event.uid || `${event.start.toISOString()}-${event.summary}`;
         const startDate = event.start.toISOString().split('T')[0];
         const endDate = event.end.toISOString().split('T')[0];
-        const guestName = event.summary || 'External Booking';
+        const guestName = event.summary || 'Booking.com Guest';
 
+        // შევამოწმოთ არსებობს თუ არა უკვე ეს ჯავშანი
         const { data: existing } = await supabase
           .from('bookings')
           .select('id')
           .eq('external_id', externalId)
-          .single();
+          .maybeSingle();
 
         if (!existing) {
+          // Supabase daterange ფორმატი: [YYYY-MM-DD,YYYY-MM-DD)
+          const dateRangeString = `[${startDate},${endDate})`;
+
           const { error: insertError } = await supabase.from('bookings').insert([
             {
+              apartment_id: APARTMENT_ID,
               external_id: externalId,
               source: 'iCal_Sync',
               guest_name: guestName,
-              date_range: `${startDate} to ${endDate}`,
+              date_range: dateRangeString,
               status: 'confirmed',
             },
           ]);
 
-          if (!insertError) {
+          if (insertError) {
+            console.error('Insert error for event:', externalId, insertError);
+            errors.push({ externalId, error: insertError.message });
+          } else {
             newBookingsCount++;
           }
         }
@@ -57,6 +68,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       message: `Sync completed successfully. ${newBookingsCount} new bookings added.`,
+      errors: errors.length > 0 ? errors : undefined,
     });
   } catch (error: any) {
     console.error('iCal sync error:', error);
@@ -65,4 +77,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}// Test deployment fix
+}
