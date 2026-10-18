@@ -30,6 +30,7 @@ export async function POST(request: Request) {
             <p><strong>თარიღები:</strong> ${date_range}</p>
             <p><strong>ჯამური ფასი:</strong> ${total_price} GEL</p>
             <hr />
+            <p>ინსტრუქციის მისაღებად გთხოვთ დამიკავშირდეთ WhatsApp-ზე ნომერზე: <strong>+995 598 54 24 24</strong></p>
             <p>ჩვენი მენეჯერი მალე დაგიკავშირდებათ დეტალების დასაზუსტებლად.</p>
           </div>
         `,
