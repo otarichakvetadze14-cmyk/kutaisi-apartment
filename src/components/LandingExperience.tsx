@@ -11,12 +11,14 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Clock,
   Coffee,
+  Mail,
   MapPin,
   Menu,
   MessageCircle,
   Navigation,
-  Mail,
+  Phone,
   Search,
   Sparkles,
   Tag,
@@ -118,6 +120,7 @@ export default function LandingExperience({
   restaurantsData,
 }: LandingExperienceProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isGe = language === 'ge';
 
   return (
     <div className="landing site-shell">
@@ -139,6 +142,7 @@ export default function LandingExperience({
           <a href="#location" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navLocation}</a>
           <a href="#recommendations" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navRecommendations}</a>
           <a href="#restaurants" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{text.navRestaurants}</a>
+          <a href="#contact" className="text-xs font-medium" onClick={() => setMenuOpen(false)}>{isGe ? 'კონტაქტი' : 'Contact'}</a>
           <button
             className="nav-close md:hidden"
             type="button"
@@ -214,12 +218,12 @@ export default function LandingExperience({
                 <strong>
                   {pricePerNight === null
                     ? text.priceLoading
-                    : `${formatCurrency(pricePerNight, language === 'ge' ? 'ka-GE' : 'en-US', currency)} / ${language === 'ge' ? 'ღამე' : 'night'}`}
+                    : `${formatCurrency(pricePerNight, isGe ? 'ka-GE' : 'en-US', currency)} / ${isGe ? 'ღამე' : 'night'}`}
                 </strong>
               </span>
               {nights > 0 && (
                 <strong className="booking-total text-sm font-serif">
-                  {nights} {language === 'ge' ? 'ღამე' : 'nights'} ({guests} {language === 'ge' ? 'სტუმარი' : 'guests'}) · {formatCurrency(totalPrice, language === 'ge' ? 'ka-GE' : 'en-US', currency)}
+                  {nights} {isGe ? 'ღამე' : 'nights'} ({guests} {isGe ? 'სტუმარი' : 'guests'}) · {formatCurrency(totalPrice, isGe ? 'ka-GE' : 'en-US', currency)}
                 </strong>
               )}
             </div>
@@ -244,7 +248,7 @@ export default function LandingExperience({
             {/* ელფოსტა */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <label htmlFor="guest-email" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-                <Mail size={15} aria-hidden="true" />{language === 'ge' ? 'ელფოსტა' : 'Email'}
+                <Mail size={15} aria-hidden="true" />{isGe ? 'ელფოსტა' : 'Email'}
               </label>
               <input
                 id="guest-email"
@@ -261,7 +265,7 @@ export default function LandingExperience({
             {/* სტუმრები (1-4) */}
             <div className="booking-field flex flex-col gap-1.5 p-3 border border-neutral-200 rounded-xl bg-white min-h-[64px] justify-center">
               <label htmlFor="guest-count" className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-                <Users size={15} aria-hidden="true" />{language === 'ge' ? 'სტუმრები' : 'Guests'}
+                <Users size={15} aria-hidden="true" />{isGe ? 'სტუმრები' : 'Guests'}
               </label>
               <select
                 id="guest-count"
@@ -269,10 +273,10 @@ export default function LandingExperience({
                 onChange={(event) => setGuests(Number(event.target.value))}
                 className="w-full text-sm outline-none bg-transparent cursor-pointer"
               >
-                <option value={1}>1 {language === 'ge' ? 'სტუმარი' : 'Guest'}</option>
-                <option value={2}>2 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
-                <option value={3}>3 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
-                <option value={4}>4 {language === 'ge' ? 'სტუმარი' : 'Guests'}</option>
+                <option value={1}>1 {isGe ? 'სტუმარი' : 'Guest'}</option>
+                <option value={2}>2 {isGe ? 'სტუმარი' : 'Guests'}</option>
+                <option value={3}>3 {isGe ? 'სტუმარი' : 'Guests'}</option>
+                <option value={4}>4 {isGe ? 'სტუმარი' : 'Guests'}</option>
               </select>
             </div>
 
@@ -519,6 +523,87 @@ export default function LandingExperience({
                 <small>{text.learnMore}</small>
               </a>
             ))}
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section className="section contact-section max-w-7xl mx-auto px-4 py-16" id="contact">
+          <div className="section-heading mb-12">
+            <p className="eyebrow"><span />{isGe ? 'კონტაქტი' : 'Contact Us'}</p>
+            <h2 className="text-3xl font-serif font-medium">
+              {isGe ? 'დაგვიკავშირდით' : 'Get in Touch'}
+            </h2>
+            <p className="section-intro max-w-2xl mt-2 text-neutral-600">
+              {isGe
+                ? 'მზად ვართ გიპასუხოთ ნებისმიერ შეკითხვაზე და დაგეხმაროთ იდეალური დასვენების დაგეგმვაში.'
+                : 'We are here to answer your questions and help you plan your stay.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* მისამართი */}
+            <div className="p-6 bg-white border border-neutral-200/80 rounded-2xl shadow-sm flex flex-col gap-3">
+              <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-neutral-900">
+                <MapPin size={20} />
+              </div>
+              <div>
+                <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
+                  {isGe ? 'მისამართი' : 'Address'}
+                </h3>
+                <p className="text-sm font-medium text-neutral-900">
+                  {isGe ? 'ქუთაისის ცენტრალური მოედანი' : 'Kutaisi Central Square'}
+                </p>
+                <p className="text-xs text-neutral-500">{isGe ? 'ქუთაისი, საქართველო' : 'Kutaisi, Georgia'}</p>
+              </div>
+            </div>
+
+            {/* ტელეფონი / WhatsApp */}
+            <div className="p-6 bg-white border border-neutral-200/80 rounded-2xl shadow-sm flex flex-col gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                <Phone size={20} />
+              </div>
+              <div>
+                <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
+                  {isGe ? 'ტელეფონი / WhatsApp' : 'Phone / WhatsApp'}
+                </h3>
+                <a href="https://wa.me/995598542424" target="_blank" rel="noreferrer" className="text-sm font-medium text-neutral-900 hover:underline block">
+                  +995 598 54 24 24
+                </a>
+                <span className="text-xs text-emerald-600 font-medium">
+                  {isGe ? 'ხელმისაწვდომია WhatsApp-ზე' : 'Available on WhatsApp'}
+                </span>
+              </div>
+            </div>
+
+            {/* ელფოსტა */}
+            <div className="p-6 bg-white border border-neutral-200/80 rounded-2xl shadow-sm flex flex-col gap-3">
+              <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-neutral-900">
+                <Mail size={20} />
+              </div>
+              <div>
+                <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
+                  {isGe ? 'ელფოსტა' : 'Email'}
+                </h3>
+                <a href="mailto:hello@kutaisi-square.ge" className="text-sm font-medium text-neutral-900 hover:underline block">
+                  hello@kutaisi-square.ge
+                </a>
+                <p className="text-xs text-neutral-500">{isGe ? 'სწრაფი უკუკავშირი' : 'Quick response'}</p>
+              </div>
+            </div>
+
+            {/* ჩასვლა / გასვლა */}
+            <div className="p-6 bg-white border border-neutral-200/80 rounded-2xl shadow-sm flex flex-col gap-3">
+              <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-neutral-900">
+                <Clock size={20} />
+              </div>
+              <div>
+                <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
+                  {isGe ? 'ჩასვლა / გასვლა' : 'Check-in / Check-out'}
+                </h3>
+                <p className="text-sm font-medium text-neutral-900">Check-in: 14:00+</p>
+                <p className="text-xs text-neutral-500">Check-out: 12:00-მდე</p>
+              </div>
+            </div>
           </div>
         </section>
       </main>
