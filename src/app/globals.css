@@ -27,8 +27,23 @@ html {
   --color-dark: var(--dark);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
+  --color-ink-soft: #1b1815;
+  --color-ivory: #ece5d8;
+  --color-sand: #d9cfbd;
+  --color-stone: #a39a8c;
   --font-sans: var(--font-noto-sans-georgian), "Noto Sans Georgian", "Noto Sans", Arial, sans-serif;
   --font-serif: var(--font-noto-serif-georgian), "Noto Serif Georgian", Georgia, serif;
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 body {
