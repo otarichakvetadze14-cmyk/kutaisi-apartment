@@ -46,7 +46,6 @@ export async function GET() {
 
           const { error: insertError } = await supabase.from('bookings').insert([
             {
-              apartment_id: APARTMENT_ID,
               external_id: externalId,
               source: 'iCal_Sync',
               guest_name: guestName,
