@@ -38,6 +38,51 @@ body {
   overflow-x: hidden;
 }
 
+.admin-dashboard .admin-glow-border {
+  isolation: isolate;
+}
+
+.admin-dashboard .admin-glow-border::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.38),
+    rgba(192, 132, 252, 0.1),
+    rgba(34, 211, 238, 0.2)
+  );
+  content: "";
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.admin-dashboard .admin-fade-in {
+  animation: admin-fade-in 0.4s ease-out both;
+}
+
+@keyframes admin-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-dashboard .admin-fade-in {
+    animation: none;
+  }
+}
+
 .landing { 
   font-family: var(--font-sans); 
   color: var(--ink); 
