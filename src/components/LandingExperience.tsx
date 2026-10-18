@@ -584,8 +584,8 @@ export default function LandingExperience({
                 <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
                   {isGe ? 'ელფოსტა' : 'Email'}
                 </h3>
-                <a href="mailto:hello@kutaisi-square.ge" className="text-sm font-medium text-neutral-900 hover:underline block">
-                  hello@kutaisi-square.ge
+                <a href="mailto:kutaisicentralsquare@gmail.com" className="text-sm font-medium text-neutral-900 hover:underline block">
+                  kutaisicentralsquare@gmail.com
                 </a>
                 <p className="text-xs text-neutral-500">{isGe ? 'სწრაფი უკუკავშირი' : 'Quick response'}</p>
               </div>
@@ -600,7 +600,7 @@ export default function LandingExperience({
                 <h3 className="text-xs uppercase font-semibold tracking-wider text-neutral-500 mb-1">
                   {isGe ? 'ჩასვლა / გასვლა' : 'Check-in / Check-out'}
                 </h3>
-                <p className="text-sm font-medium text-neutral-900">Check-in: 14:00+</p>
+                <p className="text-sm font-medium text-neutral-900">Check-in: 15:00+</p>
                 <p className="text-xs text-neutral-500">Check-out: 12:00-მდე</p>
               </div>
             </div>
@@ -615,7 +615,7 @@ export default function LandingExperience({
         </div>
         <div className="footer-contact">
           <span><MapPin size={15} aria-hidden="true" />{text.cityLabel}</span>
-          <a href="mailto:hello@kutaisi-square.ge"><Coffee size={15} aria-hidden="true" />{text.footerEmail}</a>
+          <a href="mailto:kutaisicentralsquare@gmail.com"><Coffee size={15} aria-hidden="true" />{text.footerEmail}</a>
         </div>
         <div className="footer-end">
           <span>© 2026 Kutaisi Central Square. {text.copyright}</span>
