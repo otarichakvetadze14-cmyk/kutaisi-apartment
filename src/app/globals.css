@@ -27,6 +27,9 @@ html {
   --color-dark: var(--dark);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --color-ink-soft: #1b1815;
   --color-ivory: #ece5d8;
   --color-sand: #d9cfbd;

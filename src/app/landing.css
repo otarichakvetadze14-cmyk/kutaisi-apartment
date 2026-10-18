@@ -5,12 +5,17 @@
   --landing-sand: #d9cfbd;
   --landing-bronze: #c2a170;
   --landing-stone: #a39a8c;
+  --border: rgb(236 229 216 / 12%);
+  --input: rgb(236 229 216 / 16%);
+  --ring: var(--landing-bronze);
   --color-ink: var(--landing-ink);
   --color-ink-soft: var(--landing-ink-soft);
   --color-ivory: var(--landing-ivory);
   --color-sand: var(--landing-sand);
   --color-bronze: var(--landing-bronze);
   --color-stone: var(--landing-stone);
+  --font-sans: var(--font-manrope), var(--font-noto-sans-georgian), "Noto Sans Georgian", Arial, sans-serif;
+  --font-serif: var(--font-cormorant), var(--font-noto-serif-georgian), "Noto Serif Georgian", Georgia, serif;
   min-width: 320px;
   color: var(--landing-ivory);
   background: var(--landing-ink);
