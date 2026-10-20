@@ -51,13 +51,13 @@ export function Header({
           scrolled && !open ? 'bg-ink/75 backdrop-blur-xl' : 'bg-transparent',
         )}
       >
-        <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 md:px-10">
+        <div className="mx-auto flex h-20 w-full max-w-[1600px] items-center justify-between gap-2 px-3 sm:gap-4 sm:px-5 md:px-10">
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="site-menu"
-            className="group flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.3em] text-ivory"
+            className="group flex shrink-0 items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-ivory sm:gap-3"
           >
             <span className="relative flex h-3 w-7 flex-col justify-between" aria-hidden="true">
               <span
@@ -76,14 +76,14 @@ export function Header({
             <span className="hidden sm:inline">{open ? text.menuClose : text.menuOpen}</span>
           </button>
 
-          <a href="#top" className="absolute left-1/2 -translate-x-1/2 text-center text-ivory" aria-label={text.homeLink}>
-            <span className="block font-serif text-xl font-light leading-none tracking-wide md:text-2xl">
+          <a href="#top" className="min-w-0 flex-1 px-1 text-center text-ivory" aria-label={text.homeLink}>
+            <span className="block whitespace-nowrap font-serif text-[10px] font-light leading-none tracking-tight min-[360px]:text-xs sm:text-xl sm:tracking-wide md:text-2xl">
               Kutaisi <span className="italic">Central</span> Square
             </span>
             <span className="mt-1 hidden text-[9px] uppercase tracking-[0.45em] text-stone md:block">{text.headerTagline}</span>
           </a>
 
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2 md:gap-4">
             <div role="group" aria-label={language === 'ge' ? 'ენის არჩევა' : 'Choose language'} className="flex items-center gap-1">
               {(['ge', 'en'] as const).map((option) => (
                 <button
@@ -91,7 +91,7 @@ export function Header({
                   type="button"
                   aria-pressed={language === option}
                   onClick={() => setLanguage(option)}
-                  className={`min-h-10 min-w-8 text-[9px] uppercase tracking-[0.15em] transition-colors ${
+                  className={`min-h-10 min-w-7 text-[9px] uppercase tracking-[0.1em] transition-colors sm:min-w-8 sm:tracking-[0.15em] ${
                     language === option ? 'text-bronze' : 'text-ivory/55 hover:text-ivory'
                   }`}
                 >
@@ -101,7 +101,7 @@ export function Header({
             </div>
             <a
               href="#reserve"
-              className="border border-ivory/30 px-3 py-2.5 text-[9px] font-medium uppercase tracking-[0.2em] text-ivory transition-colors duration-500 hover:border-bronze hover:bg-bronze hover:text-ink sm:px-4 sm:text-[11px] md:px-6"
+              className="whitespace-nowrap border border-ivory/30 px-2 py-2.5 text-[8px] font-medium uppercase tracking-[0.1em] text-ivory transition-colors duration-500 hover:border-bronze hover:bg-bronze hover:text-ink min-[360px]:px-3 min-[360px]:text-[9px] sm:px-4 sm:text-[11px] sm:tracking-[0.2em] md:px-6"
             >
               {text.reserve}
             </a>
