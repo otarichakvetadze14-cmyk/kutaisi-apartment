@@ -67,7 +67,7 @@ export function Hero({ booking }: { booking: BookingWidgetProps }) {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 2.2, ease }}
-        className="relative z-20 mx-auto w-full max-w-[1600px] px-5 pb-6 md:px-10 md:pb-10"
+        className="relative z-20 mx-auto mt-16 w-full max-w-[1600px] px-5 pb-6 sm:mt-20 md:px-10 md:pb-10"
       >
         <BookingWidget {...booking} />
       </motion.div>

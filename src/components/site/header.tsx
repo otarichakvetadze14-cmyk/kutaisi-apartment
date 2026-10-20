@@ -51,7 +51,7 @@ export function Header({
           scrolled && !open ? 'bg-ink/75 backdrop-blur-xl' : 'bg-transparent',
         )}
       >
-        <div className="mx-auto flex h-20 w-full max-w-[1600px] items-center justify-between gap-2 px-3 sm:gap-4 sm:px-5 md:px-10">
+        <div className="mx-auto flex h-20 w-full max-w-[1600px] items-center justify-between gap-2 px-4 sm:gap-4 sm:px-5 md:px-10">
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
@@ -76,8 +76,8 @@ export function Header({
             <span className="hidden sm:inline">{open ? text.menuClose : text.menuOpen}</span>
           </button>
 
-          <a href="#top" className="min-w-0 flex-1 px-1 text-center text-ivory" aria-label={text.homeLink}>
-            <span className="block whitespace-nowrap font-serif text-[10px] font-light leading-none tracking-tight min-[360px]:text-xs sm:text-xl sm:tracking-wide md:text-2xl">
+          <a href="#top" className="min-w-0 flex-1 text-center text-ivory" aria-label={text.homeLink}>
+            <span className="block whitespace-nowrap font-serif text-lg font-light leading-none tracking-tight sm:text-xl sm:tracking-wide md:text-2xl">
               Kutaisi <span className="italic">Central</span> Square
             </span>
             <span className="mt-1 hidden text-[9px] uppercase tracking-[0.45em] text-stone md:block">{text.headerTagline}</span>
