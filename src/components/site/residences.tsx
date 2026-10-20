@@ -32,7 +32,7 @@ function ResidenceCard({
       >
         <div className="relative aspect-[4/5] overflow-hidden lg:aspect-auto lg:h-[52vh]">
           <Image
-            src={residence.images[0].src}
+            src="/images/gallery/1.jpg"
             alt={text.residenceImageAlt}
             fill
             sizes="(min-width: 1024px) 38vw, 82vw"
