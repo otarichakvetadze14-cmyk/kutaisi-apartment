@@ -21,12 +21,14 @@ function Lightbox({
   images,
   index,
   language,
+  text,
   onClose,
   onNav,
 }: {
   images: readonly GalleryPhoto[]
   index: number
   language: Language
+  text: Record<string, string>
   onClose: () => void
   onNav: (dir: 1 | -1) => void
 }) {
@@ -50,7 +52,7 @@ function Lightbox({
     <motion.div
       role="dialog"
       aria-modal="true"
-      aria-label={language === 'ge' ? 'ფოტოს ნახვა' : 'Image viewer'}
+      aria-label={text.imageViewer}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -64,7 +66,7 @@ function Lightbox({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close viewer"
+          aria-label={text.closeViewer}
           className="flex size-11 items-center justify-center rounded-full border border-ivory/20 text-ivory transition-colors hover:bg-ivory hover:text-ink"
         >
           <X className="size-5" />
@@ -88,7 +90,7 @@ function Lightbox({
             key={dir}
             type="button"
             onClick={() => onNav(dir)}
-            aria-label={dir === -1 ? 'Previous image' : 'Next image'}
+            aria-label={dir === -1 ? text.previousImage : text.nextImage}
             className={cn(
               'absolute top-1/2 z-10 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-ivory/20 bg-ink/40 text-ivory backdrop-blur-md transition-colors hover:bg-ivory hover:text-ink',
               dir === -1 ? 'left-4 md:left-8' : 'right-4 md:right-8',
@@ -106,11 +108,13 @@ function Lightbox({
 export function Gallery({
   photos,
   language,
+  text,
   galleryIndex,
   setGalleryIndex,
 }: {
   photos: readonly GalleryPhoto[]
   language: Language
+  text: Record<string, string>
   galleryIndex: number
   setGalleryIndex: Dispatch<SetStateAction<number>>
 }) {
@@ -138,17 +142,17 @@ export function Gallery({
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="mb-20 grid gap-8 md:grid-cols-2 md:items-end">
           <div>
-            <Eyebrow className="mb-6 text-bronze">Gallery</Eyebrow>
+            <Eyebrow className="mb-6 text-bronze">{text.galleryEyebrow}</Eyebrow>
             <RevealText
-              text={'Moments in\n*light* & stone.'}
+              text={text.galleryHeading}
               className="font-serif text-5xl font-light leading-none text-ivory md:text-7xl"
             />
             <span id="gallery-title" className="sr-only">
-              Gallery
+              {text.galleryEyebrow}
             </span>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-stone md:justify-self-end">
-            From the first coffee of the morning to the fountain at dusk — a few frames from life at the residence.
+            {text.galleryDescription}
           </p>
         </div>
 
@@ -171,8 +175,8 @@ export function Gallery({
                       setOpen(selectedIndex)
                       setGalleryIndex(selectedIndex)
                     }}
-                    data-cursor="Open"
-                    aria-label={`${language === 'ge' ? 'ფოტოს ნახვა' : 'Open image'}: ${img.title[language]}`}
+                    data-cursor={text.cursorOpen}
+                    aria-label={`${text.openImage}: ${img.title[language]}`}
                     className={cn('group relative overflow-hidden', col.aspect[k])}
                   >
                     <Image
@@ -192,7 +196,16 @@ export function Gallery({
       </div>
 
       <AnimatePresence>
-        {open !== null && <Lightbox images={photos} index={open} language={language} onClose={close} onNav={nav} />}
+        {open !== null && (
+          <Lightbox
+            images={photos}
+            index={open}
+            language={language}
+            text={text}
+            onClose={close}
+            onNav={nav}
+          />
+        )}
       </AnimatePresence>
     </section>
   )

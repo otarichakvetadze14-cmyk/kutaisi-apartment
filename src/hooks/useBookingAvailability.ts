@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseErrorMessage, supabase } from '@/lib/supabase'
 import {
   hasBookingOverlap,
   parseBookingDateRange,
@@ -44,9 +44,7 @@ export function useBookingAvailability() {
       setError(null)
       return !hasBookingOverlap(checkIn, checkOut, dateRanges)
     } catch (failure) {
-      const message = failure instanceof Error
-        ? failure.message
-        : 'Unable to verify booking availability.'
+      const message = getSupabaseErrorMessage(failure, 'Unable to verify booking availability.')
       console.error('Error verifying booking availability:', message)
       setError(message)
       return null
@@ -73,9 +71,7 @@ export function useBookingAvailability() {
           setError(null)
         }
       } catch (failure) {
-        const message = failure instanceof Error
-          ? failure.message
-          : 'Unable to load existing bookings.'
+        const message = getSupabaseErrorMessage(failure, 'Unable to load existing bookings.')
         console.error('Error loading booking availability:', message)
         if (active) setError(message)
       } finally {
@@ -133,8 +129,10 @@ export function useBookingAvailability() {
       .subscribe((status, subscriptionError) => {
         if (!active) return
         if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-          const message = subscriptionError?.message
-            ?? `Booking availability subscription ${status.toLowerCase()}.`
+          const message = getSupabaseErrorMessage(
+            subscriptionError,
+            `Booking availability subscription ${status.toLowerCase()}.`,
+          )
           console.error('Booking availability subscription error:', message)
           setError(message)
         }

@@ -26,7 +26,9 @@ export function Hero({ booking }: { booking: BookingWidgetProps }) {
         >
           <Image
             src="/images/redesign/hero.webp"
-            alt="The gilded Colchis Fountain on Kutaisi Central Square at dusk"
+            alt={booking.language === 'ge'
+              ? 'კოლხური შადრევანი ქუთაისის ცენტრალურ მოედანზე, ბინდზე'
+              : 'The gilded Colchis Fountain on Kutaisi Central Square at dusk'}
             fill
             priority
             sizes="100vw"
@@ -41,14 +43,6 @@ export function Hero({ booking }: { booking: BookingWidgetProps }) {
         style={{ y: textY, opacity: textOpacity }}
         className="relative z-10 mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-center px-5 pb-10 pt-32 md:px-10"
       >
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.7, ease }}
-          className="mb-8 text-[11px] uppercase tracking-[0.4em] text-sand"
-        >
-          {booking.language === 'ge' ? 'კერძო რეზიდენცია · ქუთაისი, საქართველო' : 'A private residence · Kutaisi, Georgia'}
-        </motion.p>
         <RevealText
           as="h1"
           animateOnMount

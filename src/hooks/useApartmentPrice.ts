@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseErrorMessage, supabase } from '@/lib/supabase'
 import { DEFAULT_CURRENCY } from '@/lib/currency'
 
 function readPrice(value: unknown): number | null {
@@ -45,9 +45,7 @@ export function useApartmentPrice() {
       setPricePerNight(savedPrice)
       return true
     } catch (updateFailure) {
-      const message = updateFailure instanceof Error
-        ? updateFailure.message
-        : 'Unable to update the apartment price.'
+      const message = getSupabaseErrorMessage(updateFailure, 'Unable to update the apartment price.')
       console.error('Error updating apartment price:', message)
       setError(message)
       return false
@@ -77,9 +75,7 @@ export function useApartmentPrice() {
           setError(null)
         }
       } catch (fetchFailure) {
-        const message = fetchFailure instanceof Error
-          ? fetchFailure.message
-          : 'Unable to load the apartment price.'
+        const message = getSupabaseErrorMessage(fetchFailure, 'Unable to load the apartment price.')
         console.error('Error fetching apartment price:', message)
         if (active) setError(message)
       } finally {
@@ -120,7 +116,10 @@ export function useApartmentPrice() {
         if (!active) return
 
         if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-          const message = subscriptionError?.message ?? `Apartment price realtime subscription ${status.toLowerCase()}.`
+          const message = getSupabaseErrorMessage(
+            subscriptionError,
+            `Apartment price realtime subscription ${status.toLowerCase()}.`,
+          )
           console.error('Apartment price realtime subscription error:', message)
           setError(message)
         }

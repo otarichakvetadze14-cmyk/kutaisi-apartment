@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Eyebrow, ease, Reveal, RevealText } from './motion-primitives'
+import { Eyebrow, Reveal, RevealText } from './motion-primitives'
 
 type Language = 'ge' | 'en'
 
@@ -16,7 +16,15 @@ type Destination = {
   locationUrl: string
 }
 
-export function Discover({ destinations, language }: { destinations: readonly Destination[]; language: Language }) {
+export function Discover({
+  destinations,
+  language,
+  text,
+}: {
+  destinations: readonly Destination[]
+  language: Language
+  text: Record<string, string>
+}) {
   const [active, setActive] = useState<number | null>(null)
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
@@ -28,18 +36,17 @@ export function Discover({ destinations, language }: { destinations: readonly De
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="mb-16 grid gap-8 md:mb-24 md:grid-cols-2 md:items-end">
           <div>
-            <Eyebrow className="mb-6 text-ink/60">Discover Imereti</Eyebrow>
+            <Eyebrow className="mb-6 text-ink/60">{text.discoverEyebrow}</Eyebrow>
             <RevealText
-              text={'Canyons, caves\n& *cathedrals*.'}
+              text={text.discoverTitle}
               className="font-serif text-5xl font-light leading-none md:text-7xl"
             />
             <span id="discover-title" className="sr-only">
-              Discover the region
+              {text.discoverEyebrow}
             </span>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-ink/65 md:justify-self-end">
-            Kutaisi is the gateway to western Georgia’s wildest landscapes. Our host arranges private drivers and early
-            entry for every excursion.
+            {text.discoverDescription}
           </p>
         </div>
 
@@ -75,7 +82,7 @@ export function Discover({ destinations, language }: { destinations: readonly De
                   <span className="flex size-10 items-center justify-center rounded-full border border-ink/20 transition-all duration-500 group-hover:rotate-45 group-hover:border-ink group-hover:bg-ink group-hover:text-ivory">
                     <ArrowUpRight className="size-4" />
                     <span className="sr-only">
-                      {language === 'ge' ? 'რუკაზე გახსნა' : 'Open in maps'}: {d.title[language]} (opens in new tab)
+                      {text.openInMaps}: {d.title[language]} ({language === 'ge' ? 'იხსნება ახალ ჩანართში' : 'opens in a new tab'})
                     </span>
                   </span>
                 </a>
@@ -92,21 +99,29 @@ export function Discover({ destinations, language }: { destinations: readonly De
               {active !== null && (
                 <motion.div
                   key="preview"
-                  initial={{ opacity: 0, scale: 0.6, rotate: -6 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.6 }}
-                  transition={{ duration: 0.5, ease }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                   className="relative -ml-40 -mt-56 h-[260px] w-[200px] overflow-hidden lg:-ml-48 lg:h-[320px] lg:w-[250px]"
                 >
                   <AnimatePresence initial={false}>
                     <motion.div
                       key={active}
-                      initial={{ clipPath: 'inset(100% 0 0 0)' }}
-                      animate={{ clipPath: 'inset(0% 0 0 0)' }}
-                      transition={{ duration: 0.6, ease }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
                       className="absolute inset-0"
                     >
-                      <Image src={destinations[active].imagePath} alt="" fill sizes="250px" className="object-cover" />
+                      <Image
+                        src={destinations[active].imagePath}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 250px, 200px"
+                        unoptimized
+                        className="object-cover"
+                      />
                     </motion.div>
                   </AnimatePresence>
                 </motion.div>
@@ -118,7 +133,14 @@ export function Discover({ destinations, language }: { destinations: readonly De
         <div className="mt-16 grid grid-cols-3 gap-3 md:hidden">
           {destinations.slice(0, 3).map((d) => (
             <div key={d.title.en} className="relative aspect-[3/4] overflow-hidden">
-              <Image src={d.imagePath} alt={d.title[language]} fill sizes="33vw" className="object-cover" />
+              <Image
+                src={d.imagePath}
+                alt={d.title[language]}
+                fill
+                sizes="33vw"
+                unoptimized
+                className="object-cover"
+              />
             </div>
           ))}
         </div>

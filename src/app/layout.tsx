@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Noto_Sans_Georgian, Noto_Serif_Georgian } from "next/font/google";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import "./globals.css";
 import "./landing.css";
 
@@ -47,7 +48,10 @@ export default function RootLayout({
       lang="ka"
       className={`${manrope.variable} ${cormorant.variable} ${notoSansGeorgian.variable} ${notoSerifGeorgian.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <WhatsAppButton />
+      </body>
     </html>
   );
 }

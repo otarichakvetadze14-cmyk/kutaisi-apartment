@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   hasBookingOverlap,
@@ -13,6 +14,8 @@ type DateRole = 'checkin' | 'checkout'
 interface DatePickerProps {
   id: string
   label: string
+  language?: 'ge' | 'en'
+  emptyLabel?: string
   value: string
   otherDate: string
   role: DateRole
@@ -37,6 +40,8 @@ function parseDate(value: string): Date {
 export default function DatePicker({
   id,
   label,
+  language = 'ge',
+  emptyLabel = 'თარიღის არჩევა',
   value,
   otherDate,
   role,
@@ -47,6 +52,9 @@ export default function DatePicker({
 }: DatePickerProps) {
   const [open, setOpen] = useState(false)
   const [today, setToday] = useState('')
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const popoverRef = useRef<HTMLDivElement>(null)
   const [visibleMonth, setVisibleMonth] = useState(() => {
     const date = value ? parseDate(value) : new Date(2000, 0, 1)
     return new Date(date.getFullYear(), date.getMonth(), 1)
@@ -57,11 +65,75 @@ export default function DatePicker({
   const monthStart = new Date(year, month, 1)
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const firstWeekday = (monthStart.getDay() + 6) % 7
-  const monthLabel = new Intl.DateTimeFormat('ka-GE', {
+  const locale = language === 'ge' ? 'ka-GE' : 'en-US'
+  const monthLabel = new Intl.DateTimeFormat(locale, {
     month: 'long',
     year: 'numeric',
   }).format(visibleMonth)
-  const weekdayLabels = ['ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ', 'კვ']
+  const weekdayLabels = language === 'ge'
+    ? ['ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ', 'კვ']
+    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+  useLayoutEffect(() => {
+    if (!open) return
+
+    const updatePosition = () => {
+      const trigger = triggerRef.current
+      const popover = popoverRef.current
+      if (!trigger || !popover) return
+
+      const triggerBounds = trigger.getBoundingClientRect()
+      const popoverBounds = popover.getBoundingClientRect()
+      const margin = 12
+      const gap = 8
+      const left = Math.max(
+        margin,
+        Math.min(triggerBounds.left, window.innerWidth - popoverBounds.width - margin),
+      )
+      const below = triggerBounds.bottom + gap
+      const top = below + popoverBounds.height <= window.innerHeight - margin
+        ? below
+        : Math.max(margin, triggerBounds.top - popoverBounds.height - gap)
+
+      setPosition({ top, left })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [open, visibleMonth])
+
+  useEffect(() => {
+    if (!open) return
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (
+        target instanceof Node &&
+        !triggerRef.current?.contains(target) &&
+        !popoverRef.current?.contains(target)
+      ) {
+        setOpen(false)
+      }
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        triggerRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open])
 
   const isDateDisabled = (date: string) => {
     if (date < today) return true
@@ -77,8 +149,8 @@ export default function DatePicker({
   }
 
   const displayedValue = value
-    ? new Intl.DateTimeFormat('ka-GE', { dateStyle: 'medium' }).format(parseDate(value))
-    : 'თარიღის არჩევა'
+    ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(parseDate(value))
+    : emptyLabel
 
   return (
     <div className="relative min-w-0">
@@ -89,10 +161,12 @@ export default function DatePicker({
         {label}
       </label>
       <button
+        ref={triggerRef}
         id={id}
         type="button"
         aria-haspopup="dialog"
         aria-expanded={open}
+        aria-controls={`${id}-calendar`}
         aria-label={`${label}: ${displayedValue}`}
         disabled={disabled}
         onClick={() => {
@@ -109,16 +183,25 @@ export default function DatePicker({
         <span>{displayedValue}</span>
       </button>
 
-      {open && (
+      {open && typeof document !== 'undefined' && createPortal(
         <div
+          ref={popoverRef}
+          id={`${id}-calendar`}
           role="dialog"
-          aria-label={`${label} კალენდარი`}
-          className="absolute left-0 top-full z-30 mt-2 w-72 rounded-xl border border-neutral-200 bg-white p-3 shadow-xl"
+          aria-label={language === 'ge' ? `${label} კალენდარი` : `${label} calendar`}
+          className={`fixed z-[100] w-72 rounded-xl border border-neutral-200 bg-white p-3 shadow-xl ${
+            triggerClassName.includes('landing-date-trigger') ? 'landing-calendar-popover' : ''
+          }`}
+          style={{
+            top: position?.top ?? 12,
+            left: position?.left ?? 12,
+            visibility: position ? 'visible' : 'hidden',
+          }}
         >
           <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
-              aria-label="წინა თვე"
+              aria-label={language === 'ge' ? 'წინა თვე' : 'Previous month'}
               onClick={() => setVisibleMonth(new Date(year, month - 1, 1))}
               className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-neutral-100"
             >
@@ -127,7 +210,7 @@ export default function DatePicker({
             <span className="text-sm font-semibold capitalize">{monthLabel}</span>
             <button
               type="button"
-              aria-label="შემდეგი თვე"
+              aria-label={language === 'ge' ? 'შემდეგი თვე' : 'Next month'}
               onClick={() => setVisibleMonth(new Date(year, month + 1, 1))}
               className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-neutral-100"
             >
@@ -150,7 +233,7 @@ export default function DatePicker({
                 <button
                   key={date}
                   type="button"
-                  aria-label={new Intl.DateTimeFormat('ka-GE', { dateStyle: 'full' }).format(parseDate(date))}
+                  aria-label={new Intl.DateTimeFormat(locale, { dateStyle: 'full' }).format(parseDate(date))}
                   aria-pressed={selected}
                   disabled={disabled || blocked}
                   onClick={() => {
@@ -170,7 +253,8 @@ export default function DatePicker({
               )
             })}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )

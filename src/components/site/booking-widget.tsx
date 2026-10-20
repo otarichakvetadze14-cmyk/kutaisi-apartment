@@ -71,10 +71,10 @@ export function BookingWidget({
     availabilityError !== null
 
   return (
-    <div id="reserve" className="relative scroll-mb-6">
+    <div id="reserve" className="relative mt-8 scroll-mb-6">
       <form
         onSubmit={onBooking}
-        className="grid grid-cols-2 border border-ivory/15 bg-ink/55 backdrop-blur-xl md:grid-cols-[1.4fr_1fr_1fr_0.7fr_auto]"
+        className="grid grid-cols-2 border border-ivory/15 bg-zinc-950/90 backdrop-blur-xl md:grid-cols-[1.4fr_1fr_1fr_0.7fr_auto]"
       >
         <div className="booking-field border-b border-r border-ivory/10 md:border-b-0">
           <label htmlFor="booking-guest-name">{text.guestName}</label>
@@ -105,6 +105,8 @@ export function BookingWidget({
           <DatePicker
             id="check-in"
             label={text.checkIn}
+            language={language}
+            emptyLabel={text.selectDates}
             value={startDate}
             otherDate={endDate}
             role="checkin"
@@ -122,6 +124,8 @@ export function BookingWidget({
           <DatePicker
             id="check-out"
             label={text.checkOut}
+            language={language}
+            emptyLabel={text.selectDates}
             value={endDate}
             otherDate={startDate}
             role="checkout"
@@ -135,19 +139,19 @@ export function BookingWidget({
         <div className="booking-field">
           <label htmlFor="guest-count">
             <Users size={13} aria-hidden="true" />
-            {isGe ? 'სტუმრები' : 'Guests'}
+            {text.guests}
           </label>
           <select id="guest-count" value={guests} onChange={(event) => setGuests(Number(event.target.value))}>
             {[1, 2, 3, 4].map((count) => (
               <option key={count} value={count}>
-                {count} {isGe ? 'სტუმარი' : count === 1 ? 'guest' : 'guests'}
+                {count} {isGe ? text.guest : count === 1 ? text.guest : text.guests}
               </option>
             ))}
           </select>
         </div>
 
         <button type="submit" disabled={bookingDisabled} className="booking-submit group col-span-2 md:col-span-1">
-          <span>{loading ? text.loading : isGe ? 'დაჯავშნა' : 'Book now'}</span>
+          <span>{loading ? text.loading : text.bookNow}</span>
           <Search size={15} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
         </button>
       </form>
@@ -159,11 +163,11 @@ export function BookingWidget({
           <p className="text-rose-300">{text.priceUnavailable}</p>
         ) : (
           <p className="text-sand">
-            {isGe ? 'ფასი:' : 'Rate:'} {formatCurrency(pricePerNight, isGe ? 'ka-GE' : 'en-US', currency)} /{' '}
-            {isGe ? 'ღამე' : 'night'}
+            {text.pricePrefix} {formatCurrency(pricePerNight, isGe ? 'ka-GE' : 'en-US', currency)} /{' '}
+            {text.perNight}
             {nights > 0 &&
-              ` · ${formatCurrency(totalPrice, isGe ? 'ka-GE' : 'en-US', currency)} ${
-                isGe ? `${nights} ღამეზე` : `for ${nights} ${nights === 1 ? 'night' : 'nights'}`
+              ` · ${text.totalPrice}: ${formatCurrency(totalPrice, isGe ? 'ka-GE' : 'en-US', currency)} ${
+                isGe ? `(${nights} ღამე)` : `(${nights} ${nights === 1 ? 'night' : 'nights'})`
               }`}
           </p>
         )}

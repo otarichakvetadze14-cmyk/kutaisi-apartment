@@ -11,11 +11,13 @@ import { ease } from './motion-primitives'
 export function ResidenceDrawer({
   residence,
   priceLabel,
+  text,
   onClose,
   onReserve,
 }: {
   residence: Residence | null
   priceLabel: string
+  text: Record<string, string>
   onClose: () => void
   onReserve: () => void
 }) {
@@ -38,7 +40,7 @@ export function ResidenceDrawer({
         <motion.div key="drawer" className="fixed inset-0 z-[60]" initial="closed" animate="open" exit="closed">
           <motion.button
             type="button"
-            aria-label="Close details"
+            aria-label={text.closeDetails}
             onClick={onClose}
             variants={{ open: { opacity: 1 }, closed: { opacity: 0 } }}
             transition={{ duration: 0.5 }}
@@ -64,7 +66,7 @@ export function ResidenceDrawer({
                 >
                   <Image
                     src={residence.images[imageIndex].src}
-                    alt={residence.images[imageIndex].alt}
+                    alt={text.residenceImageAlt}
                     fill
                     sizes="(min-width: 768px) 60vw, 100vw"
                     className="object-cover"
@@ -74,7 +76,7 @@ export function ResidenceDrawer({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close details"
+                aria-label={text.closeDetails}
                 className="absolute right-5 top-5 z-10 flex size-11 items-center justify-center rounded-full bg-ink/60 text-ivory backdrop-blur-md transition-colors hover:bg-ivory hover:text-ink"
               >
                 <X className="size-5" />
@@ -85,7 +87,7 @@ export function ResidenceDrawer({
                     key={img.src + i}
                     type="button"
                     onClick={() => setImageIndex(i)}
-                    aria-label={`Show image ${i + 1}`}
+                    aria-label={`${text.showImage} ${i + 1}`}
                     aria-pressed={i === imageIndex}
                     className={cn(
                       'relative size-14 overflow-hidden border-2 transition-all',
@@ -103,18 +105,18 @@ export function ResidenceDrawer({
                 variants={{ open: { opacity: 1, y: 0 }, closed: { opacity: 0, y: 20 } }}
                 transition={{ duration: 0.8, delay: 0.3, ease }}
               >
-                <p className="text-[11px] uppercase tracking-[0.3em] text-bronze">{residence.tagline}</p>
+                <p className="text-[11px] uppercase tracking-[0.3em] text-bronze">{text.residenceTagline}</p>
                 <h3 id="drawer-title" className="mt-4 font-serif text-5xl font-light text-ivory md:text-6xl">
-                  {residence.name}
+                  {text.residenceName}
                 </h3>
-                <p className="mt-6 max-w-lg text-pretty leading-relaxed text-sand">{residence.description}</p>
+                <p className="mt-6 max-w-lg text-pretty leading-relaxed text-sand">{text.residenceDescription}</p>
 
                 <dl className="mt-10 grid grid-cols-2 gap-px bg-ivory/10 sm:grid-cols-4">
                   {[
-                    { icon: Maximize2, label: 'Size', value: residence.size },
-                    { icon: Users, label: 'Guests', value: `Up to ${residence.guests}` },
-                    { icon: BedDouble, label: 'Bed', value: residence.bed },
-                    { icon: Eye, label: 'View', value: residence.view },
+                    { icon: Maximize2, label: text.sizeLabel, value: text.residenceSize },
+                    { icon: Users, label: text.guestCapacityLabel, value: `${text.upTo} ${residence.guests}` },
+                    { icon: BedDouble, label: text.bedLabel, value: text.residenceBed },
+                    { icon: Eye, label: text.viewLabel, value: text.residenceView },
                   ].map(({ icon: Icon, label, value }) => (
                     <div key={label} className="bg-ink-soft p-4">
                       <Icon className="size-4 text-bronze" aria-hidden="true" />
@@ -124,9 +126,9 @@ export function ResidenceDrawer({
                   ))}
                 </dl>
 
-                <h4 className="mt-10 text-[10px] uppercase tracking-[0.3em] text-stone">In the residence</h4>
+                <h4 className="mt-10 text-[10px] uppercase tracking-[0.3em] text-stone">{text.residenceAmenities}</h4>
                 <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-ivory">
-                  {residence.amenities.map((a) => (
+                  {text.residenceAmenitiesList.split('|').map((a) => (
                     <li key={a} className="flex items-center gap-3">
                       <span className="size-1 rounded-full bg-bronze" aria-hidden="true" />
                       {a}
@@ -137,7 +139,7 @@ export function ResidenceDrawer({
 
               <div className="mt-auto flex flex-wrap items-center justify-between gap-6 border-t border-border pt-8 md:mt-12">
                 <p className="text-sm text-stone">
-                  from <span className="font-serif text-4xl text-ivory">{priceLabel}</span> / night
+                  {text.fromPrice} <span className="font-serif text-4xl text-ivory">{priceLabel}</span> / {text.perNightShort}
                 </p>
                 <button
                   type="button"
@@ -147,7 +149,7 @@ export function ResidenceDrawer({
                   }}
                   className="group flex items-center gap-3 bg-bronze px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-ink transition-colors hover:bg-ivory"
                 >
-                  Reserve this residence
+                  {text.reserveResidence}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>

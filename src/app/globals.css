@@ -1,41 +1,46 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 100px;
-}
 
-:root {
-  --background: #f6f3ed;
-  --foreground: #302c26;
-  --paper: #f6f7f2;
-  --cream: #fffefa;
-  --line: #d8e0da;
-  --bronze: #b96143;
-  --dark: #1f3a38;
-  --ink: #243238;
-  --muted: #56635f;
-}
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-paper: var(--paper);
-  --color-cream: var(--cream);
-  --color-line: var(--line);
-  --color-bronze: var(--bronze);
-  --color-dark: var(--dark);
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+
   --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-input: var(--input);
+  --color-ink-soft: var(--ink-soft);
+  --color-ivory: var(--ivory);
+  --color-sand: var(--sand);
+  --color-bronze: var(--bronze);
+  --color-stone: var(--stone);
+
   --color-ring: var(--ring);
-  --color-ink-soft: #1b1815;
-  --color-ivory: #ece5d8;
-  --color-sand: #d9cfbd;
-  --color-stone: #a39a8c;
-  --font-sans: var(--font-noto-sans-georgian), "Noto Sans Georgian", "Noto Sans", Arial, sans-serif;
-  --font-serif: var(--font-noto-serif-georgian), "Noto Serif Georgian", Georgia, serif;
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
   --animate-marquee: marquee 40s linear infinite;
 }
 
@@ -43,254 +48,76 @@ html {
   from {
     transform: translateX(0);
   }
-
   to {
     transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  overflow-x: hidden;
+:root {
+  color-scheme: dark;
+  --ink: #12100e;
+  --ink-soft: #1b1815;
+  --ivory: #ece5d8;
+  --sand: #d9cfbd;
+  --bronze: #c2a170;
+  --stone: #a39a8c;
+
+  --background: var(--ink);
+  --foreground: var(--ivory);
+  --card: var(--ink-soft);
+  --card-foreground: var(--ivory);
+  --popover: var(--ink-soft);
+  --popover-foreground: var(--ivory);
+  --primary: var(--bronze);
+  --primary-foreground: var(--ink);
+  --secondary: #24201c;
+  --secondary-foreground: var(--ivory);
+  --muted: #24201c;
+  --muted-foreground: var(--stone);
+  --accent: #24201c;
+  --accent-foreground: var(--ivory);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(236 229 216 / 0.12);
+  --input: rgb(236 229 216 / 0.16);
+  --ring: var(--bronze);
+  --radius: 0.25rem;
 }
 
-.admin-dashboard .admin-glow-border {
-  isolation: isolate;
-}
-
-.admin-dashboard .admin-glow-border::before {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(129, 140, 248, 0.38),
-    rgba(192, 132, 252, 0.1),
-    rgba(34, 211, 238, 0.2)
-  );
-  content: "";
-  pointer-events: none;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.admin-dashboard .admin-fade-in {
-  animation: admin-fade-in 0.4s ease-out both;
-}
-
-@keyframes admin-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  ::selection {
+    background: var(--bronze);
+    color: var(--ink);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .admin-dashboard .admin-fade-in {
-    animation: none;
+  html {
+    scroll-behavior: auto;
   }
 }
 
-.landing { 
-  font-family: var(--font-sans); 
-  color: var(--ink); 
-  background: var(--paper); 
-  scroll-behavior: smooth; 
-  margin: 0; 
-  min-width: 320px; 
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-.landing * { 
-  box-sizing: border-box; 
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.3s ease, opacity 0.25s ease;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-.landing a { 
-  color: inherit; 
-  text-decoration: none; 
-}
-
-.landing button { 
-  border: 0; 
-  background: none; 
-  color: inherit; 
-  font: inherit; 
-  cursor: pointer; 
-}
-
-/* === 1. HEADER (Perfect Vertical Alignment) === */
-.landing .site-header { 
-  height: 80px; 
-  padding: 0 32px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  position: absolute; 
-  top: 16px; 
-  left: 24px; 
-  right: 24px; 
-  width: auto;
-  z-index: 10; 
-  color: #fff; 
-  border-bottom: 1px solid rgba(255,255,255,.2); 
-}
-
-.landing .brand { display: flex; align-items: center; gap: 16px; }
-.landing .brand-mark { width: 32px; height: 32px; border: 1px solid currentColor; display: grid; place-items: center; font-family: var(--font-serif); font-size: 16px; flex-shrink: 0; }
-.landing .brand strong { display: block; font-size: 12px; font-weight: 600; letter-spacing: .03em; line-height: 1.2; }
-.landing .brand small { display: block; font-size: 8px; letter-spacing: .16em; text-transform: uppercase; margin-top: 2px; }
-
-.landing .main-nav { display: flex; gap: 32px; align-items: center; }
-.landing .main-nav a, .landing .language-switcher { font-size: 12px; display: inline-flex; align-items: center; }
-.landing .header-actions { display: flex; align-items: center; gap: 24px; }
-.landing .language-switcher { display: flex; gap: 8px; align-items: center; }
-.landing .language-option { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; }
-
-.landing .header-book { 
-  min-height: 44px; 
-  padding: 0 24px; 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255,255,255,.7); 
-  font-size: 11px; 
-  transition: background .25s ease, color .25s ease; 
-}
-.landing .header-book:hover { background: var(--cream); color: var(--ink); }
-
-/* === 2. HERO & EQUAL-SIZE BOOKING BAR === */
-.landing .hero { height: 640px; color: #fff; position: relative; display: flex; align-items: center; padding: 80px 96px 0; }
-.landing .hero-image { position: absolute; inset: 0; transform: scale(1.02); }
-.landing .hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,43,42,.72), rgba(20,43,42,.1) 70%), linear-gradient(0deg, rgba(20,43,42,.42), transparent 55%); }
-.landing .hero-content { position: relative; max-width: 640px; z-index: 1; }
-
-.landing .booking-bar { 
-  position: relative; 
-  z-index: 4; 
-  width: min(1040px, 92%); 
-  margin: -40px auto 0; 
-  padding: 24px; 
-  background: rgba(255,254,250,.98); 
-  box-shadow: 0 16px 32px rgba(31,58,56,.12); 
-}
-
-.landing .booking-form { 
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) auto !important; 
-  align-items: center !important; 
-  gap: 16px !important; 
-}
-
-.landing .booking-field { 
-  display: flex !important;
-  flex-direction: column !important; 
-  justify-content: center !important;
-  gap: 6px !important; 
-  border: 1px solid var(--line) !important; 
-  padding: 12px 16px !important; 
-  background: #fff !important;
-  min-height: 64px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.landing .booking-field label { 
-  display: flex !important;
-  align-items: center !important; 
-  gap: 8px !important; 
-  color: var(--muted) !important; 
-  font-size: 9px !important; 
-  font-weight: 600 !important; 
-  letter-spacing: .08em !important; 
-  text-transform: uppercase !important; 
-}
-
-.landing .booking-field input,
-.landing .booking-field .landing-date-trigger { 
-  width: 100% !important; 
-  border: 0 !important; 
-  outline: 0 !important; 
-  background: transparent !important; 
-  color: var(--ink) !important; 
-  font: inherit !important; 
-  font-size: 13px !important; 
-  padding: 0 !important;
-}
-
-.landing .date-picker-popover,
-.landing .react-datepicker-popper,
-.landing .react-datepicker {
-  z-index: 9999 !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-}
-
-.landing .booking-submit { 
-  background: var(--dark) !important; 
-  color: #fff !important; 
-  padding: 0 32px !important; 
-  height: 64px !important; 
-  display: flex !important; 
-  align-items: center !important; 
-  justify-content: center !important; 
-  gap: 12px !important; 
-  font-size: 12px !important; 
-  transition: background .25s ease !important; 
-  white-space: nowrap !important;
-}
-
-.landing .booking-submit:hover {
-  background: var(--bronze) !important;
-}
-
-/* === 3. „აღმოაჩინე ქუთაისი“ - თანაბარი ბარათები === */
-.landing .places-grid img,
-.landing .discover-grid img,
-.landing .place-card img {
-  height: 280px !important; 
-  width: 100% !important; 
-  object-fit: cover !important; 
-}
-
-/* === 4. MOBILE RESPONSIVE FIXES === */
-@media (max-width: 800px) { 
-  .landing .site-header { 
-    height: 64px; 
-    padding: 0 16px; 
-    top: 8px; 
-    left: 8px; 
-    right: 8px; 
-  }
-
-  .landing .booking-bar { 
-    width: 92%; 
-    margin-top: -32px; 
-    padding: 16px; 
-  }
-
-  .landing .booking-form { 
-    grid-template-columns: 1fr !important; 
-    gap: 12px !important; 
-  }
-
-  .landing .booking-submit {
-    height: 48px !important;
-    width: 100% !important;
-  }
-
-  .landing .places-grid img,
-  .landing .discover-grid img,
-  .landing .place-card img {
-    height: 200px !important;
-  }
+.no-scrollbar {
+  scrollbar-width: none;
 }

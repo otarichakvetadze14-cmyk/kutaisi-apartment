@@ -10,14 +10,23 @@ import { ease } from './motion-primitives'
 export function Header({
   language,
   setLanguage,
+  text,
 }: {
   language: 'ge' | 'en'
   setLanguage: (language: 'ge' | 'en') => void
+  text: Record<string, string>
 }) {
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
+  const localizedNav = [
+    text.navResidences,
+    text.navGallery,
+    text.navExperiences,
+    text.navDiscover,
+    text.navContact,
+  ]
 
   useMotionValueEvent(scrollY, 'change', (v) => {
     const prev = scrollY.getPrevious() ?? 0
@@ -64,14 +73,14 @@ export function Header({
                 )}
               />
             </span>
-            <span className="hidden sm:inline">{open ? (language === 'ge' ? 'დახურვა' : 'Close') : (language === 'ge' ? 'მენიუ' : 'Menu')}</span>
+            <span className="hidden sm:inline">{open ? text.menuClose : text.menuOpen}</span>
           </button>
 
-          <a href="#top" className="absolute left-1/2 -translate-x-1/2 text-center text-ivory" aria-label="Kutaisi Central Square, home">
+          <a href="#top" className="absolute left-1/2 -translate-x-1/2 text-center text-ivory" aria-label={text.homeLink}>
             <span className="block font-serif text-xl font-light leading-none tracking-wide md:text-2xl">
               Kutaisi <span className="italic">Central</span> Square
             </span>
-            <span className="mt-1 hidden text-[9px] uppercase tracking-[0.45em] text-stone md:block">Residence · Georgia</span>
+            <span className="mt-1 hidden text-[9px] uppercase tracking-[0.45em] text-stone md:block">{text.headerTagline}</span>
           </a>
 
           <div className="flex items-center gap-2 md:gap-4">
@@ -94,7 +103,7 @@ export function Header({
               href="#reserve"
               className="border border-ivory/30 px-3 py-2.5 text-[9px] font-medium uppercase tracking-[0.2em] text-ivory transition-colors duration-500 hover:border-bronze hover:bg-bronze hover:text-ink sm:px-4 sm:text-[11px] md:px-6"
             >
-              {language === 'ge' ? 'დაჯავშნა' : 'Reserve'}
+              {text.reserve}
             </a>
           </div>
         </div>
@@ -106,7 +115,7 @@ export function Header({
             id="site-menu"
             role="dialog"
             aria-modal="true"
-            aria-label="Site menu"
+            aria-label={text.siteMenu}
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
@@ -126,7 +135,7 @@ export function Header({
                   >
                     <span className="font-sans text-xs tracking-[0.3em] text-stone">0{i + 1}</span>
                     <span className="transition-transform duration-500 group-hover:translate-x-3 group-hover:italic">
-                      {link.label}
+                      {localizedNav[i]}
                     </span>
                   </motion.a>
                 </div>

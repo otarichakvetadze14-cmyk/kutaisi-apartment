@@ -10,7 +10,7 @@ import { Eyebrow, ease } from './motion-primitives'
 
 const DURATION = 8000
 
-export function Testimonials() {
+export function Testimonials({ language, text }: { language: 'ge' | 'en'; text: Record<string, string> }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
 
@@ -22,6 +22,9 @@ export function Testimonials() {
 
   const go = (dir: 1 | -1) => setIndex((i) => (i + dir + testimonials.length) % testimonials.length)
   const t = testimonials[index]
+  const quote = language === 'ge'
+    ? [text.reviewOne, text.reviewTwo, text.reviewThree][index]
+    : t.quote
 
   return (
     <section
@@ -35,12 +38,12 @@ export function Testimonials() {
       <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/80 to-ink" aria-hidden="true" />
 
       <div className="relative mx-auto max-w-5xl px-5 text-center md:px-10">
-        <Eyebrow className="justify-center text-bronze">Guest Voices</Eyebrow>
+        <Eyebrow className="justify-center text-bronze">{text.guestVoices}</Eyebrow>
         <h2 id="testimonials-title" className="sr-only">
-          What our guests say
+          {text.guestReviewsTitle}
         </h2>
 
-        <div className="mt-10 flex justify-center gap-1 text-bronze" aria-label="Five star stay">
+        <div className="mt-10 flex justify-center gap-1 text-bronze" aria-label={text.fiveStarStay}>
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} className="size-4 fill-current" aria-hidden="true" />
           ))}
@@ -56,7 +59,7 @@ export function Testimonials() {
               transition={{ duration: 0.9, ease }}
             >
               <blockquote className="text-balance font-serif text-3xl font-light italic leading-snug text-ivory md:text-5xl">
-                {`“${t.quote}”`}
+                {`“${quote}”`}
               </blockquote>
               <figcaption className="mt-10">
                 <span className="block text-sm font-medium uppercase tracking-[0.25em] text-ivory">{t.name}</span>
@@ -70,7 +73,7 @@ export function Testimonials() {
           <button
             type="button"
             onClick={() => go(-1)}
-            aria-label="Previous testimonial"
+            aria-label={text.previousReview}
             className="flex size-11 items-center justify-center rounded-full border border-ivory/20 text-ivory transition-colors hover:border-bronze hover:text-bronze"
           >
             <ArrowLeft className="size-4" />
@@ -81,7 +84,7 @@ export function Testimonials() {
                 key={i}
                 type="button"
                 onClick={() => setIndex(i)}
-                aria-label={`Show testimonial ${i + 1}`}
+                aria-label={`${text.showReview} ${i + 1}`}
                 aria-current={i === index}
                 className="relative h-px w-14 overflow-hidden bg-ivory/20 py-2 bg-clip-content"
               >
@@ -104,7 +107,7 @@ export function Testimonials() {
           <button
             type="button"
             onClick={() => go(1)}
-            aria-label="Next testimonial"
+            aria-label={text.nextReview}
             className="flex size-11 items-center justify-center rounded-full border border-ivory/20 text-ivory transition-colors hover:border-bronze hover:text-bronze"
           >
             <ArrowRight className="size-4" />

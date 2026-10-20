@@ -140,25 +140,25 @@
   white-space: nowrap;
 }
 
-.landing .booking-field [role="dialog"] {
-  z-index: 45;
+.landing-calendar-popover {
+  z-index: 100;
   width: min(18rem, calc(100vw - 2.5rem));
   border-color: rgb(236 229 216 / 16%);
-  background: var(--landing-ink-soft);
+  background: var(--ink-soft);
+  color: var(--ivory);
+}
+
+.landing-calendar-popover button {
   color: var(--landing-ivory);
 }
 
-.landing .booking-field [role="dialog"] button {
-  color: var(--landing-ivory);
-}
-
-.landing .booking-field [role="dialog"] button:hover:not(:disabled) {
+.landing-calendar-popover button:hover:not(:disabled) {
   background: rgb(236 229 216 / 8%);
 }
 
-.landing .booking-field [role="dialog"] button[aria-pressed="true"] {
-  background: var(--landing-bronze);
-  color: var(--landing-ink);
+.landing-calendar-popover button[aria-pressed="true"] {
+  background: var(--bronze);
+  color: var(--ink);
 }
 
 .landing .booking-submit {

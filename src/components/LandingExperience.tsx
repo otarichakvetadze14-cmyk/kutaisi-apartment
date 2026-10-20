@@ -147,23 +147,24 @@ export default function LandingExperience({
       <div className="landing site-shell min-h-screen overflow-x-clip bg-ink text-ivory">
         <Preloader />
         <Cursor />
-        <Header language={language} setLanguage={setLanguage} />
+        <Header language={language} setLanguage={setLanguage} text={text} />
         <main>
           <Hero booking={booking} />
-          <Intro />
-          <Residences priceLabel={priceLabel} />
+          <Intro text={text} />
+          <Residences priceLabel={priceLabel} text={text} />
           <Gallery
             photos={galleryData}
             language={language}
+            text={text}
             galleryIndex={galleryIndex}
             setGalleryIndex={setGalleryIndex}
           />
-          <Experiences restaurants={restaurantsData} language={language} />
-          <Discover destinations={attractionsData} language={language} />
-          <Testimonials />
-          <Contact />
+          <Experiences restaurants={restaurantsData} language={language} text={text} />
+          <Discover destinations={attractionsData} language={language} text={text} />
+          <Testimonials language={language} text={text} />
+          <Contact language={language} text={text} />
         </main>
-        <Footer />
+        <Footer language={language} text={text} />
       </div>
     </MotionProvider>
   )
