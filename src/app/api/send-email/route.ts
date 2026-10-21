@@ -187,14 +187,20 @@ export async function POST(request: Request) {
     const serviceId = process.env.EMAILJS_SERVICE_ID?.trim()
     const templateId = process.env.EMAILJS_TEMPLATE_ID?.trim()
     const publicKey = process.env.EMAILJS_PUBLIC_KEY?.trim()
+    const privateKey = process.env.EMAILJS_PRIVATE_KEY?.trim()
     console.log('EmailJS runtime configuration:', {
       EMAILJS_SERVICE_ID: { loaded: Boolean(serviceId), value: maskValue(serviceId) },
       EMAILJS_TEMPLATE_ID: { loaded: Boolean(templateId), value: maskValue(templateId) },
       EMAILJS_PUBLIC_KEY: { loaded: Boolean(publicKey), value: maskValue(publicKey) },
+      EMAILJS_PRIVATE_KEY: {
+        loaded: Boolean(privateKey),
+        value: maskValue(privateKey),
+        required: false,
+      },
     })
 
     if (!serviceId || !templateId || !publicKey) {
-      console.error('EmailJS sending failed: required EmailJS environment variables are missing')
+      console.error('EmailJS sending failed: EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, and EMAILJS_PUBLIC_KEY are required')
       return NextResponse.json({ error: 'Email service is not configured' }, { status: 500 })
     }
 
@@ -204,7 +210,10 @@ export async function POST(request: Request) {
 
     const templateParams = {
       email: guestEmail.trim(),
+      to_email: guestEmail.trim(),
+      guest_email: guestEmail.trim(),
       name: String(guestName),
+      guest_name: String(guestName),
       check_in: String(checkIn),
       check_out: String(checkOut),
       date_range: dateRange,
@@ -233,6 +242,7 @@ export async function POST(request: Request) {
         service_id: serviceId,
         template_id: templateId,
         user_id: publicKey,
+        ...(privateKey ? { accessToken: privateKey } : {}),
         template_params: templateParams,
       }),
     })
