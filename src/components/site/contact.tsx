@@ -12,30 +12,34 @@ export function Contact({ language, text }: { language: 'ge' | 'en'; text: Recor
   ]
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="relative w-full max-w-full overflow-x-hidden bg-ink px-4 py-20 sm:px-6 md:py-32 lg:px-8">
+    <section id="contact" aria-labelledby="contact-title" className="relative w-full max-w-full overflow-x-hidden bg-ink px-4 py-16 sm:px-6 md:py-24 lg:px-8">
       <div className="mx-auto grid w-full max-w-full gap-12 lg:grid-cols-2 lg:gap-16">
         
-        {/* მარცხენა მხარე: კონტაქტები */}
-        <div className="w-full max-w-full min-w-0">
-          <Eyebrow className="mb-6 text-bronze">{text.contactEyebrow}</Eyebrow>
+        {/* მარცხენა მხარე: ცენტრალიზებული სათაური და კონტაქტები */}
+        <div className="w-full max-w-full min-w-0 flex flex-col items-center text-center">
           
+          {/* Eyebrow - ცენტრში და მცირე დაშორებით */}
+          <Eyebrow className="mb-2 text-bronze justify-center">{text.contactEyebrow}</Eyebrow>
+          
+          {/* მთავარი სათაური (Find us on Central Square) - ცენტრში */}
           <RevealText
             text={text.contactHeading}
-            className="font-serif text-4xl font-light leading-tight text-ivory sm:text-5xl md:text-6xl"
+            className="font-serif text-4xl font-light leading-tight text-ivory sm:text-5xl md:text-6xl text-center"
           />
           
           <span id="contact-title" className="sr-only">
             {text.contactEyebrow}
           </span>
           
+          {/* აღწერა - ზემოთ აწეული (mt-4) და ცენტრში */}
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-md text-pretty leading-relaxed text-sand text-sm sm:text-base">
+            <p className="mt-4 max-w-lg text-pretty leading-relaxed text-sand text-sm sm:text-base text-center mx-auto">
               {text.contactDescription}
             </p>
           </Reveal>
 
-          {/* კონტაქტების სია - გასწორებული HTML სტრუქტურით */}
-          <dl className="mt-10 border-t border-border w-full max-w-full">
+          {/* კონტაქტების სია */}
+          <dl className="mt-8 border-t border-border w-full max-w-full">
             {details.map(({ icon: Icon, label, value, href }, i) => (
               <div 
                 key={label}
@@ -65,7 +69,7 @@ export function Contact({ language, text }: { language: 'ge' | 'en'; text: Recor
           </dl>
 
           {/* ღილაკები */}
-          <div className="mt-8 flex flex-wrap gap-4 w-full">
+          <div className="mt-8 flex flex-wrap justify-center gap-4 w-full">
             <a
               href={contact.whatsappHref}
               target="_blank"
