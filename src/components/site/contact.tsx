@@ -12,79 +12,95 @@ export function Contact({ language, text }: { language: 'ge' | 'en'; text: Recor
   ]
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="relative bg-ink py-28 md:py-40">
-      <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 lg:grid-cols-2 lg:gap-24">
-        <div>
+    <section id="contact" aria-labelledby="contact-title" className="relative w-full max-w-full overflow-x-hidden bg-ink px-4 py-20 sm:px-6 md:py-32 lg:px-8">
+      <div className="mx-auto grid w-full max-w-full gap-12 lg:grid-cols-2 lg:gap-16">
+        
+        {/* მარცხენა მხარე: კონტაქტები */}
+        <div className="w-full max-w-full min-w-0">
           <Eyebrow className="mb-6 text-bronze">{text.contactEyebrow}</Eyebrow>
+          
           <RevealText
             text={text.contactHeading}
-            className="font-serif text-5xl font-light leading-none text-ivory md:text-7xl"
+            className="font-serif text-4xl font-light leading-tight text-ivory sm:text-5xl md:text-6xl"
           />
+          
           <span id="contact-title" className="sr-only">
             {text.contactEyebrow}
           </span>
+          
           <Reveal delay={0.1}>
-            <p className="mt-8 max-w-md text-pretty leading-relaxed text-sand">
+            <p className="mt-6 max-w-md text-pretty leading-relaxed text-sand text-sm sm:text-base">
               {text.contactDescription}
             </p>
           </Reveal>
 
-          <dl className="mt-12 border-t border-border">
+          {/* კონტაქტების სია - გასწორებული HTML სტრუქტურით */}
+          <dl className="mt-10 border-t border-border w-full max-w-full">
             {details.map(({ icon: Icon, label, value, href }, i) => (
-              <Reveal key={label} delay={i * 0.05} y={16}>
-                <div className="group flex items-center gap-5 border-b border-border py-5">
+              <div 
+                key={label}
+                className="group flex flex-col items-start justify-between gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:gap-4 w-full"
+              >
+                <dt className="flex items-center gap-3 text-[10px] uppercase tracking-[0.25em] text-stone shrink-0">
                   <Icon className="size-4 shrink-0 text-bronze" aria-hidden="true" />
-                  <dt className="w-36 shrink-0 text-[10px] uppercase tracking-[0.25em] text-stone">{label}</dt>
-                  <dd className="min-w-0 flex-1 truncate text-ivory">
-                    {href ? (
-                      <a
-                        href={href}
-                        target={href.startsWith('http') ? '_blank' : undefined}
-                        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="transition-colors hover:text-bronze"
-                      >
-                        {value}
-                      </a>
-                    ) : (
-                      value
-                    )}
-                  </dd>
-                </div>
-              </Reveal>
+                  <span>{label}</span>
+                </dt>
+                
+                <dd className="w-full min-w-0 break-all text-left text-ivory text-sm sm:w-auto sm:flex-1 sm:break-words sm:text-right">
+                  {href ? (
+                    <a
+                      href={href}
+                      target={href.startsWith('http') ? '_blank' : undefined}
+                      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      className="break-all transition-colors hover:text-bronze sm:break-words"
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    value
+                  )}
+                </dd>
+              </div>
             ))}
           </dl>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          {/* ღილაკები */}
+          <div className="mt-8 flex flex-wrap gap-4 w-full">
             <a
               href={contact.whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 bg-bronze px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-ink transition-colors hover:bg-ivory"
+              className="group flex items-center gap-3 bg-bronze px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-ink transition-colors hover:bg-ivory"
             >
               {text.messageWhatsApp}
               <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
             </a>
+            
             <a
               href={contact.mapsHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 border border-ivory/25 px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-ivory transition-colors hover:border-bronze hover:text-bronze"
+              className="flex items-center gap-3 border border-ivory/25 px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-ivory transition-colors hover:border-bronze hover:text-bronze"
             >
               {text.directions}
             </a>
           </div>
         </div>
 
-        <Reveal className="relative min-h-[420px] overflow-hidden border border-border lg:min-h-full">
-          <iframe
-            title={text.mapTitle}
-            src="https://www.google.com/maps?q=Kutaisi+Central+Square&z=16&output=embed"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="absolute inset-0 h-full w-full grayscale invert-[0.92] hue-rotate-180 contrast-[0.9]"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-bronze/10 mix-blend-color" aria-hidden="true" />
-        </Reveal>
+        {/* მარჯვენა მხარე: რუკა */}
+        <div className="w-full max-w-full overflow-hidden self-center">
+          <div className="relative w-full max-w-full overflow-hidden rounded-xl border border-border">
+            <iframe
+              title={text.mapTitle}
+              src="https://www.google.com/maps?q=Kutaisi+Central+Square&z=16&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-[300px] w-full rounded-xl border-0 grayscale invert-[0.92] hue-rotate-180 contrast-[0.9] sm:h-[400px] block"
+            />
+            <div className="pointer-events-none absolute inset-0 rounded-xl bg-bronze/10 mix-blend-color" aria-hidden="true" />
+          </div>
+        </div>
+
       </div>
     </section>
   )

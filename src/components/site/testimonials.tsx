@@ -43,7 +43,7 @@ export function Testimonials({ language, text }: { language: 'ge' | 'en'; text: 
           {text.guestReviewsTitle}
         </h2>
 
-        <div className="mt-10 flex justify-center gap-1 text-bronze" aria-label={text.fiveStarStay}>
+        <div role="img" className="mt-10 flex justify-center gap-1 text-bronze" aria-label={text.fiveStarStay}>
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} className="size-4 fill-current" aria-hidden="true" />
           ))}

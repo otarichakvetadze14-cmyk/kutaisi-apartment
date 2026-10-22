@@ -57,6 +57,7 @@ export function Header({
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="site-menu"
+            aria-label="Toggle navigation menu"
             className="group flex shrink-0 items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-ivory sm:gap-3"
           >
             <span className="relative flex h-3 w-7 flex-col justify-between" aria-hidden="true">
