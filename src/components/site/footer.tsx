@@ -14,7 +14,12 @@ export function Footer({ language, text }: { language: 'ge' | 'en'; text: Record
     text.navDiscover,
     text.navContact,
   ]
-  const marqueeWords = text.marqueeWords.split('|')
+
+  // ფილტრავს "ადმინისტრაცია" / "Admin" სიტყვებს მარქიდან
+  const marqueeWords = (text.marqueeWords || '')
+    .split('|')
+    .map((w) => w.trim())
+    .filter((w) => w.length > 0 && !['ადმინისტრაცია', 'admin', 'Admin', 'Administration'].includes(w))
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setYear(String(new Date().getFullYear())), 0)
@@ -98,11 +103,6 @@ export function Footer({ language, text }: { language: 'ge' | 'en'; text: Record
             <li>
               <a href={`mailto:${contact.email}`} className="break-all transition-colors hover:text-bronze">
                 {contact.email}
-              </a>
-            </li>
-            <li>
-              <a href="/admin" className="transition-colors hover:text-bronze">
-                {text.administration}
               </a>
             </li>
           </ul>
